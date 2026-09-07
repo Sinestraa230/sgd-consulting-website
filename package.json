@@ -1,0 +1,9 @@
+{
+  "name": "sgd-consulting-site",
+  "version": "1.0.0",
+  "description": "SGD Consulting website — static frontend + Netlify serverless contact form",
+  "private": true,
+  "dependencies": {
+    "nodemailer": "^6.9.14"
+  }
+}

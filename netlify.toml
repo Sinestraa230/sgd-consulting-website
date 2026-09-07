@@ -1,0 +1,16 @@
+[build]
+  # Your static site lives in the repo root. If you move index.html into a
+  # subfolder later, change `publish` to that folder name.
+  publish = "."
+  functions = "netlify/functions"
+
+[functions]
+  # Bundle with esbuild — faster cold starts than the legacy zisi bundler
+  node_bundler = "esbuild"
+
+# Optional friendlier URL: POST /api/sendEmail -> the function
+[[redirects]]
+  from = "/api/sendEmail"
+  to = "/.netlify/functions/sendEmail"
+  status = 200
+  force = true
