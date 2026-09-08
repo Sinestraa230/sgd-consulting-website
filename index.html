@@ -548,17 +548,20 @@ footer{background:var(--g900);padding:72px 8% 36px;}
   isolation:isolate;pointer-events:none;}
 .about-parallax::before{content:'';position:absolute;inset:0;
   background:url("assets/about-turbines.jpg") center/cover no-repeat fixed;}
-/* luminosity keeps the photo's light/shade but takes colour from the gradient,
-   turning the orange sunset into brand green without touching the HTML. */
-.about-parallax::after{content:'';position:absolute;inset:0;
-  background:linear-gradient(160deg,var(--g900),var(--g600) 60%,var(--g400));
-  mix-blend-mode:luminosity;opacity:.9;}
-[data-theme=dark] .about-parallax::after{opacity:.95;}
-/* Veil so body copy stays legible over the photo */
+/* Green tint REMOVED — the photo now shows its original sunset colours. */
+
+/* Neutral readability veil. Weakest on the LEFT (photo shows through beside
+   the globe card) and strongest on the RIGHT, where the About copy sits. */
 .about-parallax-veil{position:absolute;inset:0;z-index:0;pointer-events:none;
-  background:linear-gradient(90deg,rgba(250,250,248,.9) 0%,rgba(250,250,248,.75) 45%,rgba(250,250,248,.55) 100%);}
+  background:linear-gradient(90deg,rgba(255,255,255,.42) 0%,rgba(255,255,255,.72) 44%,rgba(255,255,255,.9) 100%);}
 [data-theme=dark] .about-parallax-veil{
-  background:linear-gradient(90deg,rgba(11,25,18,.93) 0%,rgba(11,25,18,.84) 45%,rgba(11,25,18,.66) 100%);}
+  background:linear-gradient(90deg,rgba(8,14,11,.48) 0%,rgba(8,14,11,.78) 44%,rgba(8,14,11,.92) 100%);}
+/* Below 1024px the grid collapses to one column, so a left-to-right fade no
+   longer tracks the text. Switch to an even wash at full readable strength. */
+@media(max-width:1024px){
+  .about-parallax-veil{background:rgba(255,255,255,.88);}
+  [data-theme=dark] .about-parallax-veil{background:rgba(8,14,11,.9);}
+}
 /* background-attachment:fixed is ignored/janky on iOS Safari and costs paint
    performance on mobile — fall back to a normal cover image there. */
 @supports not (background-attachment:fixed){.about-parallax::before{background-attachment:scroll;}}
