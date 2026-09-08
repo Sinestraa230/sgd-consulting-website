@@ -161,7 +161,7 @@ img{display:block;max-width:100%;}
 .ml{font-size:.68rem;font-weight:600;letter-spacing:.06em;color:var(--sub);margin-top:4px;text-transform:uppercase;}
 /* Hero right panel */
 .hr{position:relative;overflow:hidden;background:var(--g800);}
-.hrb{position:absolute;inset:0;background:linear-gradient(150deg,var(--g900),var(--g700) 55%,var(--g500));}
+.hrb{position:absolute;inset:0;background:linear-gradient(150deg,rgba(13,43,26,.94),rgba(45,106,79,.82) 55%,rgba(82,183,136,.62)),url("assets/hero-forest.jpg") center/cover no-repeat;}
 .hrb::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.06) 1px,transparent 1px);background-size:30px 30px;}
 .hrb::after{content:'';position:absolute;top:28%;left:38%;transform:translate(-50%,-50%);width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(82,183,136,.35),transparent 65%);animation:orb 5s ease-in-out infinite;}
 @keyframes orb{0%,100%{transform:translate(-50%,-50%) scale(1);}50%{transform:translate(-50%,-50%) scale(1.08);}}
@@ -496,6 +496,86 @@ footer{background:var(--g900);padding:72px 8% 36px;}
 .leaf-blob-b{width:280px;height:280px;bottom:-110px;left:-90px;}
 .leaf-blob-c{width:260px;height:260px;top:-90px;left:-80px;}
 @media(max-width:768px){.leaf-blob{opacity:.6;}}
+
+/* ═══════════════════════════════════════════════════════
+   NATURE PHOTOGRAPHY LAYERS
+   Three decorative image layers, all z-index:0 and all
+   pointer-events:none. They sit strictly BELOW every
+   interactive element:
+     globe canvas .......... z:2 (inside .avm)
+     orbiting pills ........ z:2 (.orbit-system) / z:6 on hover
+     hero glass cards ...... z:2-3
+     section content ....... z:1 (via .texture-contour>*)
+     photo layers .......... z:0   ← these
+   Images live in /assets as compressed JPEGs rather than
+   inline base64, so the browser caches them separately and
+   the HTML stays small and editable.
+═══════════════════════════════════════════════════════ */
+
+/* ── 1. HERO — forest photo behind the left copy panel ──────────────────── */
+.hl{position:relative;isolation:isolate;}
+.hero-photo{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
+.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:center 35%;display:block;}
+/* Readability scrim: opaque brand green at the text edge, clearing toward the
+   right so the forest stays visible where nothing overlaps it. */
+.hero-photo::after{content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(100deg, #1B4332 0%, rgba(27,67,50,.97) 34%, rgba(27,67,50,.86) 58%, rgba(27,67,50,.6) 100%),
+    radial-gradient(ellipse 70% 90% at 18% 50%, rgba(13,43,26,.92), transparent 72%);}
+[data-theme=dark] .hero-photo::after{
+  background:
+    linear-gradient(100deg, #07140d 0%, rgba(7,20,13,.97) 34%, rgba(7,20,13,.9) 58%, rgba(7,20,13,.66) 100%),
+    radial-gradient(ellipse 70% 90% at 18% 50%, rgba(4,12,8,.94), transparent 72%);}
+/* Hero copy must clear the photo layer. :not() excludes .hero-photo — without
+   it this rule would override .hero-photo's z-index:0 (identical specificity,
+   declared later) and flatten the photo into the content layer. */
+.hl>*:not(.hero-photo){position:relative;z-index:1;}
+/* Light mode keeps dark-on-photo text, so force the light palette to white */
+.hl .htitle,.hl .hsub{color:#ffffff;}
+.hl .hbody{color:rgba(255,255,255,.82);}
+.hl .eyebrow{color:var(--g200);}
+.hl .eyebrow::before{background:var(--g200);}
+.hl .mv{color:var(--g200);}
+.hl .ml{color:rgba(255,255,255,.7);}
+.hl .hmx{border-top-color:rgba(255,255,255,.18);}
+.hl .btn2{color:#ffffff;border-color:rgba(255,255,255,.4);}
+.hl .btn2:hover{border-color:var(--g400);color:var(--g200);}
+/* The right-edge fade assumed a solid bg — drop it now there's a photo */
+.hl::after{display:none;}
+
+/* ── 2. ABOUT — parallax turbine photo, tinted to the brand palette ─────── */
+.about-parallax{position:absolute;inset:0;z-index:0;overflow:hidden;
+  isolation:isolate;pointer-events:none;}
+.about-parallax::before{content:'';position:absolute;inset:0;
+  background:url("assets/about-turbines.jpg") center/cover no-repeat fixed;}
+/* luminosity keeps the photo's light/shade but takes colour from the gradient,
+   turning the orange sunset into brand green without touching the HTML. */
+.about-parallax::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(160deg,var(--g900),var(--g600) 60%,var(--g400));
+  mix-blend-mode:luminosity;opacity:.9;}
+[data-theme=dark] .about-parallax::after{opacity:.95;}
+/* Veil so body copy stays legible over the photo */
+.about-parallax-veil{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(250,250,248,.9) 0%,rgba(250,250,248,.75) 45%,rgba(250,250,248,.55) 100%);}
+[data-theme=dark] .about-parallax-veil{
+  background:linear-gradient(90deg,rgba(11,25,18,.93) 0%,rgba(11,25,18,.84) 45%,rgba(11,25,18,.66) 100%);}
+/* background-attachment:fixed is ignored/janky on iOS Safari and costs paint
+   performance on mobile — fall back to a normal cover image there. */
+@supports not (background-attachment:fixed){.about-parallax::before{background-attachment:scroll;}}
+@media(max-width:1024px){.about-parallax::before{background-attachment:scroll;}}
+
+/* ── 3. CONTACT — subtle leaf watermark ────────────────────────────────── */
+.leaf-watermark{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+.leaf-watermark::before{content:'';position:absolute;top:-6%;right:-4%;
+  width:min(46vw,560px);aspect-ratio:1;opacity:.055;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%232D6A4F' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M100 178C58 156 34 118 38 74c2-24 14-44 30-56 18 26 44 34 66 48 24 15 34 40 26 66-8 28-34 46-60 46z'/%3E%3Cpath d='M100 178C92 132 88 96 68 18'/%3E%3Cpath d='M96 150c14-8 30-16 40-32M92 124c12-8 26-16 34-30M88 98c10-8 22-14 28-26M84 72c8-6 16-12 22-20'/%3E%3Cpath d='M92 150c-14-10-26-20-34-36M88 124c-12-10-22-18-28-32M84 98c-8-8-16-14-20-26'/%3E%3C/g%3E%3C/svg%3E") no-repeat center/contain;
+  transform:rotate(-14deg);}
+.leaf-watermark::after{content:'';position:absolute;bottom:-10%;left:-6%;
+  width:min(32vw,380px);aspect-ratio:1;opacity:.04;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cg fill='none' stroke='%232D6A4F' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='M100 178C58 156 34 118 38 74c2-24 14-44 30-56 18 26 44 34 66 48 24 15 34 40 26 66-8 28-34 46-60 46z'/%3E%3Cpath d='M100 178C92 132 88 96 68 18'/%3E%3Cpath d='M96 150c14-8 30-16 40-32M92 124c12-8 26-16 34-30M88 98c10-8 22-14 28-26'/%3E%3C/g%3E%3C/svg%3E") no-repeat center/contain;
+  transform:rotate(22deg);}
+[data-theme=dark] .leaf-watermark::before{opacity:.075;filter:brightness(1.9);}
+[data-theme=dark] .leaf-watermark::after{opacity:.055;filter:brightness(1.9);}
 </style>
 </head>
 <body>
@@ -538,6 +618,9 @@ footer{background:var(--g900);padding:72px 8% 36px;}
 <!-- ── HERO ────────────────────────────────────────────────────────────────── -->
 <section class="hero" id="home" aria-label="Hero">
   <div class="hl">
+    <div class="hero-photo" aria-hidden="true">
+      <img src="assets/hero-forest.jpg" alt="" decoding="async" fetchpriority="high">
+    </div>
     <div class="eyebrow rv">Smart Green Development</div>
     <h1 class="htitle rv d1">SGD<br/>Consulting</h1>
     <p class="hsub rv d2">Smart Solutions. Sustainable Markets.</p>
@@ -606,6 +689,8 @@ footer{background:var(--g900);padding:72px 8% 36px;}
 
 <!-- ── ABOUT ───────────────────────────────────────────────────────────────── -->
 <section class="sec about texture-contour" id="about" aria-labelledby="about-heading">
+  <div class="about-parallax" aria-hidden="true"></div>
+  <div class="about-parallax-veil" aria-hidden="true"></div>
   <div class="leaf-blob leaf-blob-a" data-speed="0.06" aria-hidden="true"></div>
   <div class="ag">
     <div class="avis rv">
@@ -810,6 +895,7 @@ footer{background:var(--g900);padding:72px 8% 36px;}
 
 <!-- ── CONTACT ─────────────────────────────────────────────────────────────── -->
 <section class="sec cont texture-contour" id="contact" aria-labelledby="contact-heading">
+  <div class="leaf-watermark" aria-hidden="true"></div>
   <div class="leaf-blob leaf-blob-b" data-speed="0.1" aria-hidden="true"></div>
   <div class="cl2">
     <div>
