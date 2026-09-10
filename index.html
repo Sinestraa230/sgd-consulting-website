@@ -548,10 +548,12 @@ footer{background:var(--g900);padding:72px 8% 36px;}
   isolation:isolate;pointer-events:none;}
 .about-parallax::before{content:'';position:absolute;inset:0;
   background:url("assets/about-turbines.jpg") center/cover no-repeat fixed;}
-/* Green tint REMOVED — the photo now shows its original sunset colours. */
+/* Green tint REMOVED — the photo now shows its original sunset colours.
+   (Former .about-parallax::after luminosity tint deleted.) */
 
 /* Neutral readability veil. Weakest on the LEFT (photo shows through beside
-   the globe card) and strongest on the RIGHT, where the About copy sits. */
+   the globe card) and strongest on the RIGHT, which is where the About copy
+   actually sits — .avis is grid child 1 (left), the text block is child 2. */
 .about-parallax-veil{position:absolute;inset:0;z-index:0;pointer-events:none;
   background:linear-gradient(90deg,rgba(255,255,255,.42) 0%,rgba(255,255,255,.72) 44%,rgba(255,255,255,.9) 100%);}
 [data-theme=dark] .about-parallax-veil{
@@ -579,9 +581,102 @@ footer{background:var(--g900);padding:72px 8% 36px;}
   transform:rotate(22deg);}
 [data-theme=dark] .leaf-watermark::before{opacity:.075;filter:brightness(1.9);}
 [data-theme=dark] .leaf-watermark::after{opacity:.055;filter:brightness(1.9);}
+
+/* ═══════════════════════════════════════════════════════
+   UI UPGRADES — smart header, scrollspy, floating labels,
+   button spinner, progress bar, custom scrollbar.
+   All colours resolve through the existing CSS variables,
+   so every rule follows [data-theme=dark] automatically.
+═══════════════════════════════════════════════════════ */
+
+/* ── 1a. Smart header (hide on scroll down, show on scroll up) ──────────── */
+#nav{will-change:transform;transition:background .4s,box-shadow .4s,transform .35s cubic-bezier(.4,0,.2,1);}
+#nav.nav-hidden{transform:translateY(-100%);}
+
+/* ── 1b. ScrollSpy active link ──────────────────────────────────────────── */
+.nl a{position:relative;}
+/* Underline grows from the centre; not applied to the pill CTA (.nbtn) */
+.nl a:not(.nbtn)::after{content:'';position:absolute;left:50%;bottom:-6px;
+  width:0;height:2px;border-radius:2px;background:var(--g500);
+  transform:translateX(-50%);transition:width .3s ease;}
+.nl a:not(.nbtn):hover::after{width:60%;}
+.nl a:not(.nbtn).active{color:var(--g600);}
+.nl a:not(.nbtn).active::after{width:100%;}
+[data-theme=dark] .nl a:not(.nbtn).active{color:var(--g400);}
+[data-theme=dark] .nl a:not(.nbtn)::after{background:var(--g400);}
+/* The CTA pill gets a ring instead of an underline */
+.nl a.nbtn.active{box-shadow:0 0 0 3px rgba(64,145,108,.35);}
+
+/* ── 2a. Floating labels ────────────────────────────────────────────────── */
+.fg{position:relative;margin-bottom:18px;}
+/* Extra top padding reserves the space the label floats into */
+.fg input,.fg textarea,.fg select{padding:21px 14px 8px;}
+.fg textarea{min-height:104px;padding-top:24px;}
+/* Label sits over the field at rest, then shrinks up to the top edge */
+.fg label{position:absolute;left:15px;top:15px;margin:0;display:block;
+  font-size:.82rem;font-weight:600;letter-spacing:0;text-transform:none;
+  color:var(--sub);pointer-events:none;transform-origin:left top;
+  transition:top .18s ease,font-size .18s ease,color .18s ease,letter-spacing .18s ease;}
+/* Floated state: focused, or holding a value (placeholder=" " is required) */
+.fg input:focus~label,
+.fg input:not(:placeholder-shown)~label,
+.fg textarea:focus~label,
+.fg textarea:not(:placeholder-shown)~label{
+  top:7px;font-size:.6rem;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--g500);}
+/* A <select> always displays something, so its label stays floated */
+.fg.fg-select label{top:7px;font-size:.6rem;font-weight:800;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--sub);}
+.fg.fg-select select:focus~label{color:var(--g500);}
+[data-theme=dark] .fg input:focus~label,
+[data-theme=dark] .fg input:not(:placeholder-shown)~label,
+[data-theme=dark] .fg textarea:focus~label,
+[data-theme=dark] .fg textarea:not(:placeholder-shown)~label,
+[data-theme=dark] .fg.fg-select select:focus~label{color:var(--g400);}
+/* Error state wins over the floated colour */
+.fg.error label{color:#dc2626!important;}
+[data-theme=dark] .fg.error label{color:#fca5a5!important;}
+/* Custom chevron for the select (appearance:none removes the native one) */
+.fg select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23566070' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;background-size:14px;padding-right:38px;}
+[data-theme=dark] .fg select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e5e7eb' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");}
+
+/* ── 2b. Submit button loading state ────────────────────────────────────── */
+.cfb{display:flex;align-items:center;justify-content:center;gap:10px;min-height:50px;}
+.cfb .cfb-spinner{width:16px;height:16px;flex-shrink:0;animation:cfb-spin .7s linear infinite;}
+.cfb .cfb-spinner circle{opacity:.28;}
+.cfb .cfb-spinner path{opacity:1;}
+@keyframes cfb-spin{to{transform:rotate(360deg);}}
+
+/* ── 3a. Reading progress bar ───────────────────────────────────────────── */
+#progressBar{position:fixed;top:0;left:0;height:3px;width:100%;z-index:300;
+  background:linear-gradient(90deg,var(--g600),var(--g400));
+  transform:scaleX(0);transform-origin:0 50%;will-change:transform;
+  transition:transform .08s linear;pointer-events:none;}
+
+/* ── 3b. Custom scrollbar ───────────────────────────────────────────────── */
+html{scrollbar-width:thin;scrollbar-color:var(--g600) var(--bg);}
+::-webkit-scrollbar{width:8px;height:8px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--g700);border-radius:8px;
+  border:2px solid var(--bg);background-clip:padding-box;}
+::-webkit-scrollbar-thumb:hover{background:var(--g500);background-clip:padding-box;}
+[data-theme=dark] ::-webkit-scrollbar-thumb{background:var(--g600);background-clip:padding-box;}
+[data-theme=dark] ::-webkit-scrollbar-thumb:hover{background:var(--g400);background-clip:padding-box;}
+
+/* Reduced motion: keep the spinner turning (it signals work in progress and
+   is paired with a text label), but drop the header slide. */
+@media(prefers-reduced-motion:reduce){
+  #nav{transition:background .4s,box-shadow .4s;}
+  #nav.nav-hidden{transform:none;}
+  .cfb .cfb-spinner{animation:cfb-spin 1.2s linear infinite!important;}
+}
 </style>
 </head>
 <body>
+
+<!-- Reading progress bar -->
+<div id="progressBar" role="presentation" aria-hidden="true"></div>
 
 <!-- ── NAVIGATION ──────────────────────────────────────────────────────────── -->
 <header>
@@ -927,15 +1022,14 @@ footer{background:var(--g900);padding:72px 8% 36px;}
       <p class="cfs">No obligation — just a conversation about how SGD Consulting can help your organisation grow sustainably.</p>
       <form id="contactForm" novalidate>
         <div class="fr2">
-          <div class="fg" id="fg-cf-name"><label for="cf-name">Full Name *</label><input id="cf-name" type="text" placeholder="Jane Smith" required autocomplete="name"/><span class="err-msg" id="err-cf-name">Please enter your name.</span></div>
-          <div class="fg" id="fg-cf-phone"><label for="cf-phone">Phone Number *</label><input id="cf-phone" type="tel" placeholder="+84 000 000 000" required autocomplete="tel"/><span class="err-msg" id="err-cf-phone">Please enter a valid phone number.</span></div>
+          <div class="fg" id="fg-cf-name"><input id="cf-name" type="text" placeholder=" " required autocomplete="name"/><label for="cf-name">Full Name *</label><span class="err-msg" id="err-cf-name">Please enter your name.</span></div>
+          <div class="fg" id="fg-cf-phone"><input id="cf-phone" type="tel" placeholder=" " required autocomplete="tel"/><label for="cf-phone">Phone Number *</label><span class="err-msg" id="err-cf-phone">Please enter a valid phone number.</span></div>
         </div>
         <div class="fr2">
-          <div class="fg" id="fg-cf-email"><label for="cf-email">Email Address *</label><input id="cf-email" type="email" placeholder="jane@company.com" required autocomplete="email"/><span class="err-msg" id="err-cf-email">Please enter a valid email address.</span></div>
-          <div class="fg"><label for="cf-company">Organisation</label><input id="cf-company" type="text" placeholder="Your Organisation" autocomplete="organization"/></div>
+          <div class="fg" id="fg-cf-email"><input id="cf-email" type="email" placeholder=" " required autocomplete="email"/><label for="cf-email">Email Address *</label><span class="err-msg" id="err-cf-email">Please enter a valid email address.</span></div>
+          <div class="fg"><input id="cf-company" type="text" placeholder=" " autocomplete="organization"/><label for="cf-company">Organisation</label></div>
         </div>
-        <div class="fg">
-          <label for="cf-service">Service of Interest</label>
+        <div class="fg fg-select">
           <select id="cf-service">
             <option value="" disabled selected>Select a service…</option>
             <option>Fundraising &amp; Grant Advisory</option>
@@ -949,14 +1043,15 @@ footer{background:var(--g900);padding:72px 8% 36px;}
             <option>Social &amp; Environmental Impact Research</option>
             <option>Not sure — I'd like to discuss</option>
           </select>
+          <label for="cf-service">Service of Interest</label>
         </div>
-        <div class="fg"><label for="cf-message">Brief Message</label><textarea id="cf-message" placeholder="Tell us about your goals or current challenges…"></textarea></div>
+        <div class="fg"><textarea id="cf-message" placeholder=" "></textarea><label for="cf-message">Brief Message</label></div>
         <!-- Honeypot: hidden from humans, bots auto-fill it and get silently ignored -->
         <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
           <label for="cf-website">Do not fill this in</label>
           <input type="text" id="cf-website" name="website" tabindex="-1" autocomplete="off">
         </div>
-        <button type="submit" id="cfbBtn" class="cfb">Send My Enquiry →</button>
+        <button type="submit" id="cfbBtn" class="cfb"><span class="cfb-label">Send My Enquiry →</span></button>
       </form>
     </div>
   </div>
@@ -1012,11 +1107,97 @@ footer{background:var(--g900);padding:72px 8% 36px;}
      JAVASCRIPT — clean, vanilla, well-commented
 ══════════════════════════════════════════════════════════ -->
 <script>
-/* ── 1. Sticky navbar ───────────────────────────────────────────────────────── */
+/* ── 1. Unified scroll controller ────────────────────────────────────────────
+   One passive listener + one rAF tick drives the sticky navbar, the smart
+   hide/show header, the reading progress bar and the leaf parallax. Reading
+   scrollY once per frame avoids layout thrash from multiple handlers. */
 const nav = document.getElementById('nav');
+const progressBar = document.getElementById('progressBar');
+const mobMenu = document.getElementById('mob');
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+let lastScrollY = window.scrollY;
+let scrollTicking = false;
+let parallaxBlobs = [];   // populated further down, once .leaf-blob nodes exist
+
+function onScrollFrame() {
+  const y = Math.max(0, window.scrollY);
+
+  // (a) Sticky navbar background
+  nav.classList.toggle('stuck', y > 50);
+
+  // (b) Smart header — hide going down, reveal going up.
+  //     Never hide near the top, and never while the mobile menu is open.
+  const delta = y - lastScrollY;
+  const menuOpen = mobMenu && mobMenu.classList.contains('open');
+  if (menuOpen || y < 140) {
+    nav.classList.remove('nav-hidden');
+  } else if (delta > 4) {
+    nav.classList.add('nav-hidden');      // scrolling down
+  } else if (delta < -4) {
+    nav.classList.remove('nav-hidden');   // scrolling up
+  }
+  lastScrollY = y;
+
+  // (c) Reading progress — scaleX is compositor-only, unlike animating width
+  if (progressBar) {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    progressBar.style.transform = 'scaleX(' + (max > 0 ? Math.min(y / max, 1) : 0) + ')';
+  }
+
+  // (d) Leaf-blob parallax
+  if (parallaxBlobs.length && !prefersReducedMotion) {
+    for (const blob of parallaxBlobs) {
+      const speed = parseFloat(blob.dataset.speed) || 0.06;
+      blob.style.transform = 'translate3d(0,' + (y * speed) + 'px,0)';
+    }
+  }
+
+  scrollTicking = false;
+}
+
 window.addEventListener('scroll', () => {
-  nav.classList.toggle('stuck', window.scrollY > 50);
+  if (!scrollTicking) { requestAnimationFrame(onScrollFrame); scrollTicking = true; }
 }, { passive: true });
+
+/* ── 1b. ScrollSpy — highlight the nav link for the section in view ───────── */
+(function initScrollSpy() {
+  const links = new Map();
+  document.querySelectorAll('.nl a[href^="#"]').forEach(a => {
+    const id = a.getAttribute('href').slice(1);
+    if (id) links.set(id, a);
+  });
+  const sections = [...links.keys()]
+    .map(id => document.getElementById(id))
+    .filter(Boolean);
+  if (!sections.length) return;
+
+  const visible = new Set();
+
+  const spy = new IntersectionObserver(entries => {
+    for (const e of entries) {
+      e.isIntersecting ? visible.add(e.target.id) : visible.delete(e.target.id);
+    }
+    // When several sections straddle the viewport, pick the topmost one
+    let winner = null, top = Infinity;
+    for (const id of visible) {
+      const t = document.getElementById(id).getBoundingClientRect().top;
+      if (t < top) { top = t; winner = id; }
+    }
+    links.forEach((a, id) => {
+      const on = id === winner;
+      a.classList.toggle('active', on);
+      on ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current');
+    });
+  }, {
+    // Band just below the sticky header, so the "current" section is the one
+    // actually being read rather than one barely clipping the viewport edge.
+    rootMargin: '-88px 0px -55% 0px',
+    threshold: 0
+  });
+
+  sections.forEach(s => spy.observe(s));
+})();
 
 /* ── 2. Dark mode toggle with localStorage persistence ─────────────────────── */
 // Apply saved theme immediately to avoid flash on load
@@ -1080,25 +1261,9 @@ if (orbitSystem) {
   });
 }
 
-/* ── 3c. Background leaf-blob parallax (throttled via rAF, GPU-accelerated) ── */
-const leafBlobs = document.querySelectorAll('.leaf-blob');
-if (leafBlobs.length && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  let parallaxTicking = false;
-  function updateParallax() {
-    const scrollY = window.scrollY;
-    leafBlobs.forEach(blob => {
-      const speed = parseFloat(blob.dataset.speed) || 0.06;
-      blob.style.transform = `translate3d(0, ${scrollY * speed}px, 0)`;
-    });
-    parallaxTicking = false;
-  }
-  window.addEventListener('scroll', () => {
-    if (!parallaxTicking) {
-      requestAnimationFrame(updateParallax);
-      parallaxTicking = true;
-    }
-  }, { passive: true });
-}
+/* ── 3c. Leaf-blob parallax — handed to the unified scroll controller above,
+   so the page keeps a single scroll listener rather than one per effect. */
+parallaxBlobs = Array.from(document.querySelectorAll('.leaf-blob'));
 
 /* ── 4. Scroll reveal (IntersectionObserver) ────────────────────────────────── */
 const revealObs = new IntersectionObserver(
@@ -1152,6 +1317,28 @@ function showToast(message, type, duration) {
   toast.querySelector('.toast-close').addEventListener('click', () => { clearTimeout(timer); remove(); });
 }
 
+/* ── 6b. Submit button loading state ─────────────────────────────────────── */
+const CFB_SPINNER =
+  '<svg class="cfb-spinner" viewBox="0 0 24 24" fill="none" aria-hidden="true">' +
+    '<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3"/>' +
+    '<path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>' +
+  '</svg>';
+
+// Pairing the spinner with a text label keeps the state readable for screen
+// readers and for anyone with reduced-motion preferences.
+function setButtonLoading(btn, isLoading, labelHtml) {
+  if (isLoading) {
+    btn.dataset.idleHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.setAttribute('aria-busy', 'true');
+    btn.innerHTML = CFB_SPINNER + '<span class="cfb-label">' + (labelHtml || 'Sending…') + '</span>';
+  } else {
+    btn.disabled = false;
+    btn.removeAttribute('aria-busy');
+    if (btn.dataset.idleHtml) { btn.innerHTML = btn.dataset.idleHtml; delete btn.dataset.idleHtml; }
+  }
+}
+
 /* ── 7. Contact form — custom validation UI + toast on submit (no alert, no native UI) ── */
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
@@ -1194,9 +1381,8 @@ if (contactForm) {
       return;
     }
 
-    // Show sending state
-    btn.textContent = 'Sending…';
-    btn.disabled = true;
+    // Show sending state (spinner + label)
+    setButtonLoading(btn, true, 'Sending…');
 
     // ── Send to the Netlify serverless function ──────────────────────────
     fetch('/.netlify/functions/sendEmail', {
@@ -1229,8 +1415,7 @@ if (contactForm) {
       })
       .finally(() => {
         // Always restore the button, whether it succeeded or failed
-        btn.textContent = 'Send My Enquiry →';
-        btn.disabled = false;
+        setButtonLoading(btn, false);
       });
   });
 }
