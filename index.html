@@ -638,7 +638,13 @@ footer{background:var(--g900);padding:72px 8% 36px;}
 [data-theme=dark] .fg.error label{color:#fca5a5!important;}
 /* Custom chevron for the select (appearance:none removes the native one) */
 .fg select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23566070' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 14px center;background-size:14px;padding-right:38px;}
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  background-size:14px;
+  padding-right:38px;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  appearance:none;}
 [data-theme=dark] .fg select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e5e7eb' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");}
 
 /* ── 2b. Submit button loading state ────────────────────────────────────── */
