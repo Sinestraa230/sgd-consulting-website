@@ -301,13 +301,34 @@ img{display:block;max-width:100%;}
 /* ═══════════════════════════════════════════════════════
    APPROACH BANNER
 ═══════════════════════════════════════════════════════ */
-.appr{background:var(--g800);padding:88px 8%;position:relative;overflow:hidden;}
-.appr::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.04) 1px,transparent 1px);background-size:34px 34px;}
+.appr{
+  --appr-scrim:linear-gradient(100deg,
+      rgba(13,43,26,.94) 0%,
+      rgba(13,43,26,.90) 34%,
+      rgba(27,67,50,.86) 66%,
+      rgba(27,67,50,.82) 100%);
+  background:
+    var(--appr-scrim),
+    url("assets/approach-bg.jpg") center/cover no-repeat,
+    var(--g800);
+  padding:88px 8%;position:relative;overflow:hidden;}
+.appr::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:radial-gradient(circle,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:34px 34px;}
+[data-theme=dark] .appr{
+  --appr-scrim:linear-gradient(100deg,
+      rgba(6,20,12,.96) 0%,
+      rgba(6,20,12,.93) 34%,
+      rgba(13,43,26,.90) 66%,
+      rgba(13,43,26,.87) 100%);}
 .apri{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;position:relative;z-index:1;}
 .apt .stag{color:#B7E4C7;}.apt .stag::before{background:#B7E4C7;}.apt .sh{color:#fff;}.apt .sp{color:rgba(255,255,255,.68);}
 .aps{display:flex;flex-direction:column;gap:16px;}
-.ap{display:flex;gap:18px;align-items:flex-start;padding:18px 22px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);transition:background .3s,transform .3s;}
-.ap:hover{background:rgba(255,255,255,.13);transform:translateX(5px);}
+.ap{display:flex;gap:18px;align-items:flex-start;padding:18px 22px;border-radius:16px;
+  background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  transition:background .3s,transform .3s;}
+.ap:hover{background:rgba(255,255,255,.17);transform:translateX(5px);}
 .apn{width:32px;height:32px;flex-shrink:0;border-radius:50%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:.82rem;font-weight:900;color:#fff;}
 .apt2{font-size:.86rem;font-weight:700;color:#fff;margin-bottom:4px;}
 .apd{font-size:.77rem;line-height:1.6;color:rgba(255,255,255,.62);}
