@@ -638,13 +638,7 @@ footer{background:var(--g900);padding:72px 8% 36px;}
 [data-theme=dark] .fg.error label{color:#fca5a5!important;}
 /* Custom chevron for the select (appearance:none removes the native one) */
 .fg select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23566070' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;
-  background-position:right 14px center;
-  background-size:14px;
-  padding-right:38px;
-  -webkit-appearance:none;
-  -moz-appearance:none;
-  appearance:none;}
+  background-repeat:no-repeat;background-position:right 14px center;background-size:14px;padding-right:38px;}
 [data-theme=dark] .fg select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e5e7eb' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");}
 
 /* ── 2b. Submit button loading state ────────────────────────────────────── */
@@ -676,6 +670,156 @@ html{scrollbar-width:thin;scrollbar-color:var(--g600) var(--bg);}
   #nav{transition:background .4s,box-shadow .4s;}
   #nav.nav-hidden{transform:none;}
   .cfb .cfb-spinner{animation:cfb-spin 1.2s linear infinite!important;}
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE OPTIMISATION  (320px – 1024px)
+   Declared LAST on purpose: the floating-label, chevron and hero rules above
+   share the same specificity, so source order is what lets these win without
+   resorting to !important.
+═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 0. Overflow containment ───────────────────────────────────────────────
+   Decorative layers use negative offsets (.leaf-blob -110px, .chip -16px)
+   which push past the viewport. overflow-x:clip contains them WITHOUT
+   creating a scroll container — unlike overflow:hidden, it does not break
+   position:sticky on .tf or the sticky navbar. */
+*,*::before,*::after{box-sizing:border-box;}
+.hero,.sec,.appr,.prtn,.crt,footer{overflow-x:clip;}
+img,svg,video,canvas{max-width:100%;}
+
+@media(max-width:1024px){
+
+  /* ── 1. HERO ────────────────────────────────────────────────────────── */
+  /* 52vw collapsed to ~195px on a 375px screen. A clamped floor keeps the
+     panel from looking crushed while still capping it on tablets. */
+  .hr{min-height:auto;display:flex;flex-direction:column;justify-content:flex-end;
+      gap:12px;padding:clamp(18px,5vw,28px) 5% clamp(20px,5vw,28px);}
+  .hl{padding:104px 6% 52px;}
+  /* Fluid type: the old 2.8rem floor overflowed 320px screens */
+  .htitle{font-size:clamp(2.1rem,9vw,4.8rem);}
+  .hsub{font-size:clamp(1.05rem,4.4vw,1.7rem);}
+  .hbody{font-size:clamp(.88rem,3.6vw,.93rem);max-width:none;}
+  .lf{display:none;}                 /* floating leaves add noise at this size */
+  .hrc{position:static;padding:0;}
+  .gc{padding:20px 20px;}
+  .gc h3{font-size:1.15rem;}
+
+  /* ── 2. RESTORE HIDDEN CREDIBILITY ELEMENTS ─────────────────────────── */
+  /* Badge: was display:none — now a compact inline chip */
+  .hbdg{position:static;display:inline-flex;align-self:flex-start;
+        padding:9px 14px;gap:9px;animation:none;}
+  .hbdg .bv{font-size:1.1rem;}
+  .hbdg .bl{font-size:.6rem;}
+
+  /* Metric widgets: were display:none — now a horizontally scrollable strip */
+  .hric-row{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;
+            -webkit-overflow-scrolling:touch;scrollbar-width:none;
+            margin:0 -5%;padding:2px 5%;}
+  .hric-row::-webkit-scrollbar{display:none;}
+  .hric{display:block;position:static;flex:0 0 auto;scroll-snap-align:start;
+        padding:11px 15px;animation:none;}
+  .hric .hric-v{font-size:1.05rem;}
+  .hric .hric-l{font-size:.58rem;}
+
+  /* Service pills: were display:none with the orbit — now a wrapped chip row.
+     Every layer of the orbit machinery has to be neutralised: the rotating
+     parents, the translateX arms, and the counter-rotation on the pill. */
+  .orbit-system{display:flex;position:static;width:auto;height:auto;
+                flex-wrap:wrap;gap:7px;}
+  .orbit-ring{display:none;}
+  .orbiter{position:static;width:auto;height:auto;animation:none;}
+  .arm,.arm1,.arm2,.arm3,.arm4{position:static;transform:none;}
+  .pill{position:static;translate:none;animation:none;font-size:.62rem;
+        padding:7px 13px;}
+
+  /* ── 3. TOUCH TARGETS — 44×44 minimum ───────────────────────────────── */
+  .tbtn{width:44px;height:44px;}
+  .hbg{min-width:44px;min-height:44px;align-items:center;justify-content:center;}
+  .mcls{width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+        top:18px;}
+  .mob a{min-height:44px;display:flex;align-items:center;padding:4px 14px;}
+  .fso{width:44px;height:44px;}
+  .ntab{min-height:44px;}
+  .btn,.btn2,.cfb{min-height:48px;}
+  .fcta{min-height:44px;}
+  .fc a{padding:5px 0;}              /* footer links get a real tap band */
+
+  /* Mobile drawer: momentum scroll + no rubber-band bleed to the page */
+  .mob{overscroll-behavior:contain;}
+
+  /* ── 4. FORM — stop iOS auto-zoom ───────────────────────────────────── */
+  /* Safari zooms the viewport on focus for any field under 16px. Raising the
+     size means the floating-label offsets have to move with it. */
+  .fg input,.fg textarea,.fg select{font-size:16px;padding:24px 14px 9px;
+                                    min-height:54px;}
+  .fg textarea{padding-top:26px;min-height:120px;}
+  .fg{margin-bottom:20px;}
+  .fg label{top:17px;font-size:.95rem;}
+  .fg input:focus~label,
+  .fg input:not(:placeholder-shown)~label,
+  .fg textarea:focus~label,
+  .fg textarea:not(:placeholder-shown)~label,
+  .fg.fg-select label{top:8px;font-size:.62rem;}
+  .fg select{background-position:right 15px center;padding-right:42px;}
+  .cfw{padding:28px 20px;}
+
+  /* ── 5. CONTAINED DECOR ─────────────────────────────────────────────── */
+  .leaf-blob-a{width:210px;height:210px;top:-70px;right:-50px;}
+  .leaf-blob-b{width:180px;height:180px;bottom:-60px;left:-40px;}
+  .leaf-blob-c{width:170px;height:170px;top:-50px;left:-40px;}
+  .chip1{bottom:-10px;left:0;}
+  .chip2{top:-10px;right:0;}
+  .pt{height:58px;padding:0 20px;}
+  .pt img{height:30px;max-width:92px;}
+}
+
+@media(max-width:768px){
+  /* Long service titles ("Gender Equality, Disability & Social Inclusion…")
+     must wrap instead of forcing the card wider. break-word only splits when
+     a word genuinely cannot fit, so normal copy is untouched. */
+  .sct{overflow-wrap:break-word;hyphens:auto;font-size:1rem;}
+  .scb,.tct,.apd,.afi p{overflow-wrap:break-word;}
+  .an,.ciiv{overflow-wrap:break-word;}
+  .ciiv a{word-break:break-word;}
+
+  .news-tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;
+             margin:0 -5%;padding:0 5% 4px;}
+  .news-tabs::-webkit-scrollbar{display:none;}
+  .ntab{flex:0 0 auto;}
+
+  .tf{padding:28px 22px;}
+  .tc{padding:22px 20px;}
+  .appr{padding:64px 6%;}
+  .prtn{padding:56px 6%;}
+  .ap{padding:16px 16px;}
+  .ph,.stop{gap:16px;}
+}
+
+@media(max-width:540px){
+  .sec{padding:56px 5%;}
+  .hl{padding:96px 5% 44px;}
+  /* 3 metrics in a row overflow below ~400px; let them wrap in pairs */
+  .hmx{flex-wrap:wrap;gap:14px 22px;}
+  .hmx>div{flex:0 0 auto;}
+  .mv{font-size:1.55rem;}
+  .crow{gap:10px;}
+  .crow .btn,.crow .btn2{flex:1 1 100%;justify-content:center;}
+  .cfw{padding:24px 16px;}
+  .gc{padding:18px 16px;}
+  .fb{flex-direction:column;gap:6px;text-align:center;}
+  .tfsr{gap:16px;}
+}
+
+/* Narrow phones — iPhone SE / Galaxy S at 320–375px */
+@media(max-width:380px){
+  .sec{padding:48px 18px;}
+  .hl{padding:92px 18px 40px;}
+  .htitle{font-size:2rem;letter-spacing:-.02em;}
+  .hric-row,.news-tabs{margin:0 -18px;padding-left:18px;padding-right:18px;}
+  .hbdg{padding:8px 12px;}
+  .pill{font-size:.58rem;padding:6px 11px;}
+  .fcta{padding:10px 14px;font-size:.66rem;gap:7px;}
 }
 </style>
 </head>
@@ -761,9 +905,11 @@ html{scrollbar-width:thin;scrollbar-color:var(--g600) var(--bg);}
       <div style="font-size:1.7rem">🌱</div>
       <div><div class="bv">SGD</div><div class="bl">Impact Consulting</div></div>
     </div>
-    <div class="hric hric1"><div class="hric-v">50+</div><div class="hric-l">Green Businesses</div></div>
-    <div class="hric hric2"><div class="hric-v">$2M+</div><div class="hric-l">Capital Mobilised</div></div>
-    <div class="hric hric3"><div class="hric-v">9</div><div class="hric-l">Core Services</div></div>
+    <div class="hric-row">
+      <div class="hric hric1"><div class="hric-v">50+</div><div class="hric-l">Green Businesses</div></div>
+      <div class="hric hric2"><div class="hric-v">$2M+</div><div class="hric-l">Capital Mobilised</div></div>
+      <div class="hric hric3"><div class="hric-v">9</div><div class="hric-l">Core Services</div></div>
+    </div>
     <div class="orbit-system">
       <div class="orbit-ring r1"></div>
       <div class="orbit-ring r2"></div>
