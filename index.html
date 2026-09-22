@@ -154,8 +154,8 @@ img{display:block;max-width:100%;}
 /* ═══════════════════════════════════════════════════════
    HERO
 ═══════════════════════════════════════════════════════ */
-.hero{min-height:100vh;display:grid;grid-template-columns:55% 45%;}
-.hl{display:flex;flex-direction:column;justify-content:center;padding:120px 5% 80px 8%;background:var(--bg);position:relative;z-index:2;}
+.hero{min-height:100vh;display:grid;grid-template-columns:55% 45%;position:relative;isolation:isolate;}
+.hl{display:flex;flex-direction:column;justify-content:center;padding:120px 5% 80px 8%;background:transparent;position:relative;z-index:2;}
 .hl::after{content:'';position:absolute;top:0;right:-40px;bottom:0;width:80px;background:linear-gradient(to right,var(--bg),transparent);pointer-events:none;z-index:3;}
 .eyebrow{display:flex;align-items:center;gap:10px;font-size:.68rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--g600);margin-bottom:22px;}
 .eyebrow::before{content:'';width:32px;height:1.5px;background:var(--g500);}
@@ -167,9 +167,8 @@ img{display:block;max-width:100%;}
 .mv{font-family:var(--fh);font-size:1.9rem;font-weight:900;color:var(--g700);letter-spacing:-.03em;}
 .ml{font-size:.68rem;font-weight:600;letter-spacing:.06em;color:var(--sub);margin-top:4px;text-transform:uppercase;}
 /* Hero right panel */
-.hr{position:relative;overflow:hidden;background:var(--g800);}
-.hrb{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(13,43,26,.62),transparent 150px),linear-gradient(150deg,rgba(13,43,26,.45),rgba(27,67,50,.28) 55%,rgba(13,43,26,.30)),url("assets/hero-bg.jpg") 98% center/cover no-repeat;}
-[data-theme=dark] .hrb{background:linear-gradient(to bottom,rgba(13,43,26,.70),transparent 150px),linear-gradient(150deg,rgba(7,20,13,.62),rgba(13,43,26,.46) 55%,rgba(7,20,13,.52)),url("assets/hero-bg.jpg") 98% center/cover no-repeat;}
+.hr{position:relative;z-index:1;overflow:hidden;background:transparent;}
+.hrb{position:absolute;inset:0;}
 .hrb::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.06) 1px,transparent 1px);background-size:30px 30px;}
 .hrb::after{content:'';position:absolute;top:28%;left:38%;transform:translate(-50%,-50%);width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(82,183,136,.35),transparent 65%);animation:orb 5s ease-in-out infinite;}
 @keyframes orb{0%,100%{transform:translate(-50%,-50%) scale(1);}50%{transform:translate(-50%,-50%) scale(1.08);}}
@@ -178,21 +177,21 @@ img{display:block;max-width:100%;}
 .lf:nth-child(3){width:44px;height:44px;top:38%;right:9%;transform:rotate(20deg);animation-delay:1.5s;}
 @keyframes lfx{0%,100%{transform:rotate(inherit) translateY(0);}50%{transform:rotate(inherit) translateY(-14px);}}
 .hrc{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;padding:48px;}
-.gc{background:rgba(13,43,26,.34);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.18);border-radius:24px;padding:28px 32px;color:#fff;}
-.gc-ey{font-size:.65rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:10px;}
+.gc{background:rgba(13,43,26,.52);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.18);border-radius:24px;padding:28px 32px;color:#fff;}
+.gc-ey{font-size:.65rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.85);margin-bottom:10px;}
 .gc h3{font-family:var(--fh);font-size:1.35rem;font-style:normal;font-weight:700;margin-bottom:12px;line-height:1.25;}
 .gc p{font-size:.82rem;line-height:1.7;color:rgba(255,255,255,.9);}
-.hbdg{position:absolute;top:48px;left:44px;background:rgba(13,43,26,.34);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:16px;padding:14px 18px;color:#fff;display:flex;gap:12px;align-items:center;z-index:3;animation:bf 4s ease-in-out infinite;}
+.hbdg{position:absolute;top:48px;left:44px;background:rgba(13,43,26,.52);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:16px;padding:14px 18px;color:#fff;display:flex;gap:12px;align-items:center;z-index:3;animation:bf 4s ease-in-out infinite;}
 @keyframes bf{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
 .bv{font-family:var(--fh);font-size:1.5rem;font-weight:900;line-height:1;}
-.bl{font-size:.65rem;font-weight:600;opacity:.7;margin-top:3px;}
+.bl{font-size:.65rem;font-weight:600;opacity:.92;margin-top:3px;}
 /* Low-opacity decorative Asia map backdrop */
 .asia-map{position:absolute;inset:0;z-index:1;opacity:.09;pointer-events:none;}
 .asia-map svg{width:100%;height:100%;}
 /* Floating impact-counter glass widgets */
-.hric{position:absolute;z-index:2;background:rgba(13,43,26,.34);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:12px 16px;color:#fff;text-align:center;animation:hricfloat 5s ease-in-out infinite;}
+.hric{position:absolute;z-index:2;background:rgba(13,43,26,.52);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:12px 16px;color:#fff;text-align:center;animation:hricfloat 5s ease-in-out infinite;}
 .hric .hric-v{font-family:var(--fh);font-size:1.25rem;font-weight:900;line-height:1;}
-.hric .hric-l{font-size:.6rem;font-weight:700;letter-spacing:.04em;opacity:.9;margin-top:3px;white-space:nowrap;}
+.hric .hric-l{font-size:.6rem;font-weight:700;letter-spacing:.04em;opacity:1;margin-top:3px;white-space:nowrap;}
 .hric1{top:16%;right:9%;animation-delay:.3s;}
 .hric2{top:52%;left:6%;animation-delay:1.2s;}
 .hric3{bottom:30%;right:6%;animation-delay:2.1s;}
@@ -226,7 +225,7 @@ img{display:block;max-width:100%;}
 .arm3{transform:translateX(170px);}
 .arm4{transform:translateX(-95px);}
 
-.pill{position:absolute;top:0;left:0;translate:-50% -50%;background:rgba(13,43,26,.34);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:.68rem;font-weight:800;letter-spacing:.05em;padding:7px 15px;border-radius:50px;white-space:nowrap;cursor:default;pointer-events:auto;animation:counter-cw 20s linear infinite;transition:scale .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s ease,background .3s ease;will-change:rotate,scale;}
+.pill{position:absolute;top:0;left:0;translate:-50% -50%;background:rgba(13,43,26,.52);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:.68rem;font-weight:800;letter-spacing:.05em;padding:7px 15px;border-radius:50px;white-space:nowrap;cursor:default;pointer-events:auto;animation:counter-cw 20s linear infinite;transition:scale .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s ease,background .3s ease;will-change:rotate,scale;}
 .pill.ccw{animation-name:counter-ccw;}
 .pill1{animation-duration:20s;}
 .pill2{animation-duration:30s;animation-delay:-9s;}
@@ -548,33 +547,72 @@ footer{background:var(--g900);padding:72px 8% 36px;}
    the HTML stays small and editable.
 ═══════════════════════════════════════════════════════ */
 
-/* ── 1. HERO — forest photo behind the left copy panel ──────────────────── */
-.hl{position:relative;isolation:isolate;}
-.hero-photo{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;}
-.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:8% 35%;display:block;}
-/* Readability scrim: opaque brand green at the text edge, clearing toward the
-   right so the forest stays visible where nothing overlaps it. */
-.hero-photo::after{content:'';position:absolute;inset:0;
+/* ── 1. HERO — rotating background shared by both panels ─────────────────
+   One layer spans the whole hero, so there is no seam between the panels.
+   Slides crossfade: the incoming slide fades in ON TOP of the outgoing one,
+   which stays fully opaque underneath (.is-leaving), so there is never a
+   dark dip mid-transition. Only opacity + transform animate (GPU-cheap). */
+.hero-bg{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:var(--g900);}
+.hero-slide{position:absolute;inset:0;opacity:0;z-index:0;transition:opacity 1.8s ease;}
+.hero-slide img{width:100%;height:100%;object-fit:cover;display:block;
+  object-position:var(--fx,50%) var(--fy,50%);transform-origin:var(--fx,50%) var(--fy,50%);}
+.hero-slide.is-active{opacity:1;z-index:2;}
+.hero-slide.is-leaving{opacity:1;z-index:1;transition:none;}
+/* Ken Burns: same animation-name on .is-active and .is-leaving, so the zoom
+   continues smoothly through the handover instead of snapping back. */
+@keyframes heroKB{from{transform:scale(1)}to{transform:scale(1.08)}}
+.hero-bg.kb .is-active img,.hero-bg.kb .is-leaving img{animation:heroKB 9s linear forwards;}
+.hero-bg.paused img{animation-play-state:paused;}
+/* Readability scrim — one shared layer above every slide */
+.hero-scrim{position:absolute;inset:0;z-index:3;
   background:
-    linear-gradient(to bottom, rgba(13,43,26,.62), transparent 150px),
-    radial-gradient(ellipse 70% 90% at 18% 50%, rgba(13,43,26,.70), transparent 72%),
-    linear-gradient(100deg, rgba(27,67,50,.78) 0%, rgba(27,67,50,.62) 38%, rgba(27,67,50,.36) 70%, rgba(27,67,50,.16) 100%);}
-[data-theme=dark] .hero-photo::after{
+    linear-gradient(to bottom, rgba(13,43,26,.66) 0, rgba(13,43,26,0) 170px),
+    radial-gradient(ellipse 48% 75% at 17% 55%, rgba(13,43,26,.60), rgba(13,43,26,0) 72%),
+    linear-gradient(95deg, rgba(27,67,50,.74) 0%, rgba(27,67,50,.58) 36%, rgba(27,67,50,.30) 62%, rgba(27,67,50,.16) 100%);}
+[data-theme=dark] .hero-scrim{
   background:
-    linear-gradient(to bottom, rgba(13,43,26,.70), transparent 150px),
-    radial-gradient(ellipse 70% 90% at 18% 50%, rgba(4,12,8,.80), transparent 72%),
-    linear-gradient(100deg, rgba(7,20,13,.88) 0%, rgba(7,20,13,.76) 38%, rgba(7,20,13,.54) 70%, rgba(7,20,13,.34) 100%);}
-/* Hero copy must clear the photo layer. :not() excludes .hero-photo — without
-   it this rule would override .hero-photo's z-index:0 (identical specificity,
-   declared later) and flatten the photo into the content layer. */
-.hl>*:not(.hero-photo){position:relative;z-index:1;}
+    linear-gradient(to bottom, rgba(7,20,13,.65) 0, rgba(7,20,13,0) 170px),
+    radial-gradient(ellipse 48% 75% at 17% 55%, rgba(4,12,8,.62), rgba(4,12,8,0) 72%),
+    linear-gradient(95deg, rgba(7,20,13,.82) 0%, rgba(7,20,13,.68) 36%, rgba(7,20,13,.46) 62%, rgba(7,20,13,.34) 100%);}
+/* Slideshow controls — pause + dots (WCAG 2.2.2: auto-moving content must be pausable) */
+.hero-ctrl{position:absolute;left:8%;bottom:26px;z-index:5;display:flex;align-items:center;gap:4px;padding:4px 8px 4px 4px;border-radius:50px;background:rgba(13,43,26,.55);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
+.hero-ctrl[hidden]{display:none;}
+.hero-pause{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;cursor:pointer;color:#fff;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:background .3s,border-color .3s;}
+.hero-pause:hover{background:rgba(13,43,26,.75);border-color:var(--g400);}
+.hero-pause .i-play,.hero-pause[aria-pressed="true"] .i-pause{display:none;}
+.hero-pause[aria-pressed="true"] .i-play{display:block;}
+.hero-dots{display:flex;align-items:center;}
+.hero-dot{width:32px;height:32px;padding:0;border:0;background:none;cursor:pointer;display:grid;place-items:center;}
+.hero-dot::before{content:'';width:8px;height:8px;border-radius:50px;background:rgba(255,255,255,.62);
+  box-shadow:0 0 0 1px rgba(13,43,26,.35);transition:width .4s ease,background .3s;}
+.hero-dot:hover::before{background:rgba(255,255,255,.85);}
+.hero-dot[aria-current="true"]::before{width:22px;background:#fff;}
+.hero-pause:focus-visible,.hero-dot:focus-visible{outline:2.5px solid var(--g200);outline-offset:2px;}
+.hl>*{position:relative;z-index:1;}
+@media(max-width:600px){.hero-slide img{object-position:50% 50%;transform-origin:50% 40%;}
+  .hero-ctrl{left:5%!important;transform:none!important;}}   /* keeps clear of the floating CTA */
+/* Single-column layouts: text spans the full width, so the scrim runs top→bottom.
+   Heaviest behind the headline block, easing off where the glass cards sit. */
+@media(max-width:1024px){
+  .hero-scrim{background:
+    linear-gradient(to bottom, rgba(13,43,26,.70) 0, rgba(13,43,26,0) 140px),
+    linear-gradient(to bottom, rgba(27,67,50,.64) 0%, rgba(27,67,50,.73) 34%, rgba(27,67,50,.68) 60%, rgba(27,67,50,.44) 100%);}
+  [data-theme=dark] .hero-scrim{background:
+    linear-gradient(to bottom, rgba(7,20,13,.60) 0, rgba(7,20,13,0) 140px),
+    linear-gradient(to bottom, rgba(7,20,13,.70) 0%, rgba(7,20,13,.76) 38%, rgba(7,20,13,.64) 62%, rgba(7,20,13,.48) 100%);}
+  .hl .hbody,.hl .ml{color:#fff;}          /* full white over the tall phone crop */
+  .hero-ctrl{left:50%;transform:translateX(-50%);bottom:12px;}
+  .hero .hr{padding-bottom:64px;}          /* room for the controls under the glass card */
+}
 /* Light mode keeps dark-on-photo text, so force the light palette to white */
 .hl .htitle,.hl .hsub{color:#ffffff;}
-.hl .hbody{color:rgba(255,255,255,.82);}
-.hl .eyebrow{color:var(--g200);}
-.hl .eyebrow::before{background:var(--g200);}
-.hl .mv{color:var(--g200);}
-.hl .ml{color:rgba(255,255,255,.7);}
+.hl .hbody{color:rgba(255,255,255,.92);}
+.hl .eyebrow{color:var(--g100);}
+.hl .eyebrow::before{background:var(--g100);}
+.hl .mv{color:var(--g100);}
+.hl .ml{color:rgba(255,255,255,.85);}
 .hl .hmx{border-top-color:rgba(255,255,255,.18);}
 .hl .btn2{color:#ffffff;border-color:rgba(255,255,255,.4);}
 .hl .btn2:hover{border-color:var(--g400);color:var(--g200);}
@@ -943,10 +981,26 @@ main#main:focus{outline:none;}
 <!-- ── HERO ────────────────────────────────────────────────────────────────── -->
 <main id="main">
 <section class="hero" id="home" aria-label="Hero">
+  <div class="hero-bg" aria-hidden="true">
+    <picture class="hero-slide is-active" style="--fx:32%;--fy:55%">
+      <source media="(max-width: 600px)" srcset="assets/hero/hero-1-wind-m.jpg">
+      <img src="assets/hero/hero-1-wind.jpg" fetchpriority="high" alt="" width="1920" height="1269" decoding="async">
+    </picture>
+    <picture class="hero-slide" style="--fx:48%;--fy:50%">
+      <source media="(max-width: 600px)" data-srcset="assets/hero/hero-2-lake-m.jpg">
+      <img data-src="assets/hero/hero-2-lake.jpg" alt="" width="1920" height="1080" decoding="async">
+    </picture>
+    <picture class="hero-slide" style="--fx:58%;--fy:50%">
+      <source media="(max-width: 600px)" data-srcset="assets/hero/hero-3-rice-m.jpg">
+      <img data-src="assets/hero/hero-3-rice.jpg" alt="" width="1920" height="1281" decoding="async">
+    </picture>
+    <picture class="hero-slide" style="--fx:50%;--fy:50%">
+      <source media="(max-width: 600px)" data-srcset="assets/hero/hero-4-solar-m.jpg">
+      <img data-src="assets/hero/hero-4-solar.jpg" alt="" width="1920" height="1080" decoding="async">
+    </picture>
+    <div class="hero-scrim"></div>
+  </div>
   <div class="hl">
-    <div class="hero-photo" aria-hidden="true">
-      <img src="assets/hero-bg.jpg" alt="" width="1200" height="675" decoding="async" fetchpriority="high">
-    </div>
     <div class="eyebrow rv">Smart Green Development</div>
     <h1 class="htitle rv d1">SGD<br/>Consulting</h1>
     <p class="hsub rv d2">Smart Solutions. Sustainable Markets.</p>
@@ -1011,6 +1065,18 @@ main#main:focus{outline:none;}
         <h3>Fundraising &amp; Investment Mobilisation</h3>
         <p>Smart Green Development Consulting is a leading firm specialising in fundraising and investment mobilisation for innovative startups across Asia. We connect visionary entrepreneurs with the capital and strategic support needed to scale breakthrough ideas.</p>
       </div>
+    </div>
+  </div>
+  <div class="hero-ctrl" hidden>
+    <button class="hero-pause" type="button" aria-pressed="false" aria-label="Pause background slideshow">
+      <svg class="i-pause" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><rect x="2" y="1" width="3" height="10" rx="1" fill="currentColor"/><rect x="7" y="1" width="3" height="10" rx="1" fill="currentColor"/></svg>
+      <svg class="i-play" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z" fill="currentColor"/></svg>
+    </button>
+    <div class="hero-dots" role="group" aria-label="Background image">
+      <button class="hero-dot" type="button" aria-label="Image 1 of 4" aria-current="true"></button>
+      <button class="hero-dot" type="button" aria-label="Image 2 of 4"></button>
+      <button class="hero-dot" type="button" aria-label="Image 3 of 4"></button>
+      <button class="hero-dot" type="button" aria-label="Image 4 of 4"></button>
     </div>
   </div>
 </section>
@@ -1714,6 +1780,93 @@ if (loadMoreBtn) {
     showToast('More articles will appear here soon.', 'info');
   });
 }
+
+/* ── Hero background slideshow ───────────────────────────────────────────────
+   • Slide 1 loads with the page; later slides load + fully decode BEFORE they
+     fade in, so a half-drawn image is never shown.
+   • Pauses when the tab is hidden, when the hero is off-screen, or when the
+     user presses pause. Reduced-motion users get a static first image. */
+(function heroSlideshow() {
+  const bg = document.querySelector('.hero-bg');
+  const hero = document.querySelector('.hero');
+  if (!bg || !hero) return;
+  const slides = Array.from(bg.querySelectorAll('.hero-slide'));
+  if (slides.length < 2) return;
+
+  const ctrl = document.querySelector('.hero-ctrl');
+  const dots = Array.from(document.querySelectorAll('.hero-dot'));
+  const pauseBtn = document.querySelector('.hero-pause');
+  const HOLD = 7000;                         // time each image is shown (ms)
+  const FADE = 1800;                         // must match the CSS transition
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let current = 0, timer = null, leaveTimer = null;
+  let userPaused = reduce, pageVisible = !document.hidden, inView = true;
+  const loading = new Map([[0, Promise.resolve()]]);
+
+  function load(n) {
+    if (loading.has(n)) return loading.get(n);
+    const s = slides[n], img = s.querySelector('img'), src = s.querySelector('source');
+    if (src && src.dataset.srcset) src.srcset = src.dataset.srcset;   // set <source> first
+    if (img.dataset.src) img.src = img.dataset.src;
+    const p = (img.decode ? img.decode() : Promise.resolve()).catch(() => {});
+    loading.set(n, p);
+    return p;
+  }
+
+  function show(n) {
+    if (n === current) return;
+    const prev = slides[current];
+    slides.forEach(s => s.classList.remove('is-leaving'));
+    prev.classList.remove('is-active');
+    prev.classList.add('is-leaving');        // stays opaque underneath
+    slides[n].classList.add('is-active');    // fades in on top
+    clearTimeout(leaveTimer);
+    leaveTimer = setTimeout(() => prev.classList.remove('is-leaving'), FADE + 50);
+    dots.forEach((d, k) => d.setAttribute('aria-current', k === n ? 'true' : 'false'));
+    current = n;
+  }
+
+  const running = () => !userPaused && pageVisible && inView;
+
+  function schedule() {
+    clearTimeout(timer);
+    bg.classList.toggle('paused', !running());
+    if (running()) timer = setTimeout(next, HOLD);
+  }
+
+  async function goTo(n) {
+    clearTimeout(timer);
+    await load(n);
+    show(n);
+    schedule();
+    load((n + 1) % slides.length);           // warm up the following image
+  }
+  const next = () => goTo((current + 1) % slides.length);
+
+  // controls
+  if (ctrl) ctrl.hidden = false;
+  dots.forEach((d, k) => d.addEventListener('click', () => goTo(k)));
+  if (pauseBtn) {
+    const sync = () => {
+      pauseBtn.setAttribute('aria-pressed', String(userPaused));
+      pauseBtn.setAttribute('aria-label', userPaused ? 'Play background slideshow' : 'Pause background slideshow');
+    };
+    sync();
+    pauseBtn.addEventListener('click', () => { userPaused = !userPaused; sync(); schedule(); });
+  }
+
+  // don't burn battery when nobody can see it
+  document.addEventListener('visibilitychange', () => { pageVisible = !document.hidden; schedule(); });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(([e]) => { inView = e.isIntersecting; schedule(); }).observe(hero);
+  }
+
+  if (!reduce) requestAnimationFrame(() => requestAnimationFrame(() => bg.classList.add('kb')));
+  schedule();
+  // fetch slide 2 once the page has finished its critical loading
+  window.addEventListener('load', () => setTimeout(() => load(1), 800), { once: true });
+})();
 </script>
 
 <!-- ── 3D Hologram Globe — rebuilt from scratch, zero dependencies ─────────────
