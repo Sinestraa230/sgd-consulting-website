@@ -920,6 +920,14 @@ main#main:focus{outline:none;}
   color:var(--g600);text-decoration:underline;min-height:44px;line-height:44px;}
 [data-theme=dark] .mail-fallback{color:var(--g400);}
 .mail-fallback[hidden]{display:none;}
+/* Inline form status — persists after the toast fades */
+.form-status{margin-top:14px;padding:12px 14px;border-radius:10px;font-size:.84rem;font-weight:600;line-height:1.5;
+  border:1px solid transparent;}
+.form-status[hidden]{display:none;}
+.form-status.is-success{background:#ECF7F0;border-color:#95D5B2;color:#1B4332;}
+.form-status.is-error{background:#FEF2F2;border-color:#FCA5A5;color:#991B1B;}
+[data-theme=dark] .form-status.is-success{background:rgba(82,183,136,.14);border-color:rgba(82,183,136,.45);color:#D8F3DC;}
+[data-theme=dark] .form-status.is-error{background:rgba(220,38,38,.14);border-color:rgba(248,113,113,.5);color:#FECACA;}
 .req-note{font-size:.72rem;color:var(--sub);margin-bottom:14px;}
 
 /* ── Transparent nav over the hero ──────────────────────────────────────
@@ -1320,14 +1328,14 @@ main#main:focus{outline:none;}
       <form id="contactForm" novalidate>
         <div class="fr2">
           <div class="fg" id="fg-cf-name"><input id="cf-name" type="text" placeholder=" " required autocomplete="name"/><label for="cf-name">Full Name *</label><span class="err-msg" id="err-cf-name">Please enter your name.</span></div>
-          <div class="fg" id="fg-cf-phone"><input id="cf-phone" type="tel" placeholder=" " required autocomplete="tel"/><label for="cf-phone">Phone Number *</label><span class="err-msg" id="err-cf-phone">Please enter a valid phone number.</span></div>
+          <div class="fg" id="fg-cf-phone"><input id="cf-phone" type="tel" placeholder=" " autocomplete="tel" inputmode="tel"/><label for="cf-phone">Phone Number</label><span class="err-msg" id="err-cf-phone">Please enter a valid phone number.</span></div>
         </div>
         <div class="fr2">
           <div class="fg" id="fg-cf-email"><input id="cf-email" type="email" placeholder=" " required autocomplete="email"/><label for="cf-email">Email Address *</label><span class="err-msg" id="err-cf-email">Please enter a valid email address.</span></div>
           <div class="fg"><input id="cf-company" type="text" placeholder=" " autocomplete="organization"/><label for="cf-company">Organisation</label></div>
         </div>
-        <div class="fg fg-select">
-          <select id="cf-service">
+        <div class="fg fg-select" id="fg-cf-service">
+          <select id="cf-service" required>
             <option value="" disabled selected>Select a service…</option>
             <option>Fundraising &amp; Grant Advisory</option>
             <option>Blended Finance &amp; Investment Mobilisation</option>
@@ -1340,15 +1348,16 @@ main#main:focus{outline:none;}
             <option>Social &amp; Environmental Impact Research</option>
             <option>Not sure — I'd like to discuss</option>
           </select>
-          <label for="cf-service">Service of Interest</label>
+          <label for="cf-service">Service of Interest *</label><span class="err-msg" id="err-cf-service">Please choose a service.</span>
         </div>
-        <div class="fg"><textarea id="cf-message" placeholder=" "></textarea><label for="cf-message">Brief Message</label></div>
+        <div class="fg" id="fg-cf-message"><textarea id="cf-message" placeholder=" " required maxlength="5000"></textarea><label for="cf-message">Brief Message *</label><span class="err-msg" id="err-cf-message">Please tell us a little more (at least 10 characters).</span></div>
         <!-- Honeypot: hidden from humans, bots auto-fill it and get silently ignored -->
         <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
-          <label for="cf-website">Do not fill this in</label>
-          <input type="text" id="cf-website" name="website" tabindex="-1" autocomplete="off">
+          <label for="cf-gotcha">Leave this field empty</label>
+          <input type="text" id="cf-gotcha" name="_gotcha" tabindex="-1" autocomplete="off">
         </div>
         <button type="submit" id="cfbBtn" class="cfb"><span class="cfb-label">Send My Enquiry →</span></button>
+        <p class="form-status" id="formStatus" role="status" aria-live="polite" hidden></p>
         <a id="mailFallback" class="mail-fallback" href="#" hidden>Or email us directly &rarr;</a>
       </form>
     </div>
@@ -1642,101 +1651,141 @@ function setButtonLoading(btn, isLoading, labelHtml) {
   }
 }
 
-/* ── 7. Contact form — custom validation UI + toast on submit (no alert, no native UI) ── */
+/* ── 7. Contact form — validation, submission state, Resend backend ───────────
+   Required: name, email, service, message. Phone is optional (validated if filled).
+   Field errors from the server (422) are mapped back onto the matching inputs. */
 const contactForm = document.getElementById('contactForm');
 if (contactForm) {
-  const nameInput  = document.getElementById('cf-name');
-  const phoneInput = document.getElementById('cf-phone');
-  const emailInput = document.getElementById('cf-email');
+  const $ = (id) => document.getElementById(id);
+  const F = { name: $('cf-name'), phone: $('cf-phone'), email: $('cf-email'),
+              company: $('cf-company'), service: $('cf-service'), message: $('cf-message') };
+  const statusEl = $('formStatus');
+  const fallback = $('mailFallback');
+  const isVi = (document.documentElement.lang || '').toLowerCase().startsWith('vi');
+  const UI = {
+    sending: isVi ? 'Đang gửi…' : 'Sending…',
+    success: isVi ? 'Cảm ơn bạn! Đội ngũ của chúng tôi sẽ liên hệ trong vòng 24 giờ.'
+                  : 'Thank you, our team will reach out within 24 hours.',
+    fix:     isVi ? 'Vui lòng kiểm tra các trường được đánh dấu.' : 'Please fix the highlighted fields.',
+    failed:  isVi ? 'Không thể gửi tin nhắn lúc này. Vui lòng thử lại hoặc gửi email trực tiếp.'
+                  : 'We could not send your message right now. Please try again, or email us using the link below.',
+  };
+  const SUPPORT_EMAIL = 'Customers.sgc@gmail.com';
 
-  const isValidEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-  const isValidPhone = v => /^[+()0-9\s-]{7,}$/.test(v);
-  const isValidName  = v => v.trim().length > 1;
+  const rules = {
+    name:    (v) => v.trim().length >= 2,
+    email:   (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()),
+    phone:   (v) => v.trim() === '' || /^[+()0-9\s.-]{7,20}$/.test(v.trim()),
+    service: (v) => v !== '',
+    message: (v) => v.trim().length >= 10,
+  };
 
-  // Show/hide a field's custom error state
-  function setFieldError(input, isValid) {
-    const wrapper = input.closest('.fg');
-    wrapper.classList.toggle('error', !isValid);
+  function setFieldError(key, invalid, msg) {
+    const input = F[key]; if (!input) return;
+    const wrap = input.closest('.fg'); const err = $('err-cf-' + key);
+    if (wrap) wrap.classList.toggle('error', invalid);
+    input.setAttribute('aria-invalid', invalid ? 'true' : 'false');
+    if (err) {
+      if (msg) err.textContent = msg;                  // server message, if more specific
+      input.setAttribute('aria-describedby', err.id);
+    }
   }
 
-  // Clear error as soon as the user starts correcting a field
-  [nameInput, phoneInput, emailInput].forEach(input => {
-    input.addEventListener('input', () => setFieldError(input, true));
+  function showStatus(kind, text) {
+    if (!statusEl) return;
+    statusEl.className = 'form-status is-' + kind;
+    statusEl.textContent = text;
+    statusEl.hidden = false;
+  }
+
+  function buildFallback() {
+    const v = (k) => (F[k] && F[k].value) || '';
+    const body = encodeURIComponent(
+      'Name: ' + v('name') + '\nPhone: ' + v('phone') + '\nEmail: ' + v('email') +
+      '\nOrganisation: ' + v('company') + '\nService: ' + v('service') + '\n\n' + v('message'));
+    fallback.href = 'mailto:' + SUPPORT_EMAIL + '?subject=' +
+      encodeURIComponent('Enquiry from ' + (v('name') || 'website')) + '&body=' + body;
+    fallback.hidden = false;
+  }
+
+  // Clear a field's error as soon as the user starts correcting it
+  Object.keys(rules).forEach((k) => {
+    const evt = k === 'service' ? 'change' : 'input';
+    F[k] && F[k].addEventListener(evt, () => setFieldError(k, false));
   });
 
-  contactForm.addEventListener('submit', function (e) {
-    e.preventDefault(); // never reload the page
+  let startedAt = Date.now();          // bots submit instantly; the server rejects < 2.5s
+  let submitting = false;
 
-    const btn = document.getElementById('cfbBtn');
+  contactForm.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    if (submitting) return;            // block double-submits
 
-    const nameValid  = isValidName(nameInput.value);
-    const phoneValid = isValidPhone(phoneInput.value.trim());
-    const emailValid = isValidEmail(emailInput.value.trim());
-
-    setFieldError(nameInput, nameValid);
-    setFieldError(phoneInput, phoneValid);
-    setFieldError(emailInput, emailValid);
-
-    if (!nameValid || !phoneValid || !emailValid) {
-      showToast('Please fix the highlighted fields before submitting.', 'error');
-      // Focus the first invalid field for accessibility
-      (!nameValid ? nameInput : !phoneValid ? phoneInput : emailInput).focus();
+    // 1. Client-side validation (the server re-validates everything)
+    const invalid = Object.keys(rules).filter((k) => F[k] && !rules[k](F[k].value));
+    Object.keys(rules).forEach((k) => setFieldError(k, invalid.includes(k)));
+    if (invalid.length) {
+      showStatus('error', UI.fix);
+      showToast(UI.fix, 'error');
+      F[invalid[0]].focus();
       return;
     }
 
-    // Show sending state (spinner + label)
-    setButtonLoading(btn, true, 'Sending…');
+    // 2. Loading state
+    const btn = $('cfbBtn');
+    submitting = true;
+    setButtonLoading(btn, true, UI.sending);
+    if (statusEl) statusEl.hidden = true;
+    if (fallback) fallback.hidden = true;
 
-    // ── Send to the Netlify serverless function ──────────────────────────
-    fetch('/.netlify/functions/sendEmail', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name:    nameInput.value.trim(),
-        phone:   phoneInput.value.trim(),
-        email:   emailInput.value.trim(),
-        company: (document.getElementById('cf-company') || {}).value?.trim() || '',
-        service: (document.getElementById('cf-service') || {}).value || '',
-        message: (document.getElementById('cf-message') || {}).value?.trim() || '',
-        website: (document.getElementById('cf-website') || {}).value || '' // honeypot — bots fill this, humans can't see it
-      })
-    })
-      .then(async (res) => {
-        // Parse the body even on errors so we can surface the server's message
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok || !data.success) {
-          throw new Error(data.error || 'Something went wrong. Please try again.');
-        }
-        return data;
-      })
-      .then(() => {
-        showToast('Your message has been sent successfully! We will be in touch within one business day.', 'success');
-        contactForm.reset();
-      })
-      .catch((err) => {
-        // Serverless function unreachable or misconfigured — hand the user a
-        // working mailto: with their own input pre-filled so the enquiry isn't lost.
-        const v = (id) => (document.getElementById(id) || {}).value || '';
-        const body = encodeURIComponent(
-          'Name: ' + v('cf-name') + '\n' +
-          'Phone: ' + v('cf-phone') + '\n' +
-          'Email: ' + v('cf-email') + '\n' +
-          'Organisation: ' + v('cf-company') + '\n' +
-          'Service: ' + v('cf-service') + '\n\n' +
-          v('cf-message')
-        );
-        const subject = encodeURIComponent('Enquiry from ' + (v('cf-name') || 'website'));
-        const fallback = document.getElementById('mailFallback');
-        if (fallback) {
-          fallback.href = 'mailto:Customers.sgc@gmail.com?subject=' + subject + '&body=' + body;
-          fallback.hidden = false;
-        }
-        showToast(err.message || 'We could not send your message right now — use the email link below.', 'error');
-      })
-      .finally(() => {
-        // Always restore the button, whether it succeeded or failed
-        setButtonLoading(btn, false);
+    const ctrl = new AbortController();
+    const timeout = setTimeout(() => ctrl.abort(), 15000);
+
+    try {
+      const res = await fetch('/.netlify/functions/sendEmail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        signal: ctrl.signal,
+        body: JSON.stringify({
+          name: F.name.value.trim(), email: F.email.value.trim(), phone: F.phone.value.trim(),
+          company: (F.company && F.company.value.trim()) || '', service: F.service.value,
+          message: F.message.value.trim(),
+          _gotcha: ($('cf-gotcha') || {}).value || '',   // honeypot — humans never see it
+          _elapsed: Date.now() - startedAt,
+        }),
       });
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok && data.success) {
+        contactForm.reset();
+        Object.keys(rules).forEach((k) => setFieldError(k, false));
+        showStatus('success', UI.success);
+        showToast(UI.success, 'success');
+        startedAt = Date.now();
+        return;
+      }
+      if (res.status === 422 && data.fields) {
+        // The server found problems the browser didn't: highlight those fields
+        const keys = Object.keys(data.fields).filter((k) => F[k]);
+        keys.forEach((k) => setFieldError(k, true, data.fields[k]));
+        showStatus('error', data.error || UI.fix);
+        showToast(data.error || UI.fix, 'error');
+        if (keys.length) F[keys[0]].focus();
+        return;
+      }
+      throw new Error(data.error || UI.failed);
+    } catch (err) {
+      // Network failure, timeout or server error: never lose the enquiry —
+      // offer a pre-filled email instead.
+      const msg = err.name === 'AbortError' ? UI.failed : (err.message || UI.failed);
+      showStatus('error', msg);
+      showToast(msg, 'error');
+      if (fallback) buildFallback();
+    } finally {
+      clearTimeout(timeout);
+      submitting = false;
+      setButtonLoading(btn, false);
+    }
   });
 }
 
@@ -1796,7 +1845,7 @@ if (loadMoreBtn) {
   const ctrl = document.querySelector('.hero-ctrl');
   const dots = Array.from(document.querySelectorAll('.hero-dot'));
   const pauseBtn = document.querySelector('.hero-pause');
-  const HOLD = 4000;                         // time each image is shown (ms)
+  const HOLD = 7000;                         // time each image is shown (ms)
   const FADE = 1800;                         // must match the CSS transition
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
