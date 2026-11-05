@@ -1437,8 +1437,8 @@ html.menu-open,body.menu-open{overflow:hidden;}
     </div>
 
     <div class="cfw rv d2">
-      <h3 class="cft">Book a Free Consultation</h3>
-      <p class="cfs">No obligation — just a conversation about how SGD Consulting can help your organisation grow sustainably.</p>
+      <h3 class="cft">Request a Service Consultation</h3>
+      <p class="cfs">Leave your contact information below. Our consultants will get in touch to discuss your specific requirements and how our services can support your business.</p>
       <p class="req-note"><span aria-hidden="true">*</span> indicates a required field</p>
       <form id="contactForm" novalidate>
         <div class="fr2">
@@ -1471,7 +1471,7 @@ html.menu-open,body.menu-open{overflow:hidden;}
           <label for="cf-gotcha">Leave this field empty</label>
           <input type="text" id="cf-gotcha" name="_gotcha" tabindex="-1" autocomplete="off">
         </div>
-        <button type="submit" id="cfbBtn" class="cfb"><span class="cfb-label">Send My Enquiry →</span></button>
+        <button type="submit" id="cfbBtn" class="cfb"><span class="cfb-label">Submit Inquiry →</span></button>
         <p class="form-status" id="formStatus" role="status" aria-live="polite" hidden></p>
         <a id="mailFallback" class="mail-fallback" href="#" hidden>Or email us directly &rarr;</a>
       </form>
@@ -1518,8 +1518,8 @@ html.menu-open,body.menu-open{overflow:hidden;}
 </footer>
 
 <!-- ── FLOATING CTA ────────────────────────────────────────────────────────── -->
-<a href="#contact" class="fcta" aria-label="Book a consultation">
-  <div class="fcd" aria-hidden="true"></div>Book a Consultation
+<a href="#contact" class="fcta" aria-label="Request a consultation">
+  <div class="fcd" aria-hidden="true"></div>Request Consultation
 </a>
 
 <!-- Toast notification container -->
@@ -1793,8 +1793,8 @@ if (contactForm) {
   const isVi = (document.documentElement.lang || '').toLowerCase().startsWith('vi');
   const UI = {
     sending: isVi ? 'Đang gửi…' : 'Sending…',
-    success: isVi ? 'Cảm ơn bạn! Đội ngũ của chúng tôi sẽ liên hệ trong vòng 24 giờ.'
-                  : 'Thank you, our team will reach out within 24 hours.',
+    success: isVi ? 'Cảm ơn bạn. Chúng tôi đã nhận được thông tin và sẽ liên hệ lại trong thời gian sớm nhất.'
+                  : 'Thank you. We have received your inquiry and our team will contact you shortly.',
     fix:     isVi ? 'Vui lòng kiểm tra các trường được đánh dấu.' : 'Please fix the highlighted fields.',
     failed:  isVi ? 'Không thể gửi tin nhắn lúc này. Vui lòng thử lại hoặc gửi email trực tiếp.'
                   : 'We could not send your message right now. Please try again, or email us using the link below.',
