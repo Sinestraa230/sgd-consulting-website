@@ -74,7 +74,6 @@
 [data-theme=dark] .hsub{color:var(--g400);}
 [data-theme=dark] .hbody{color:#e5e7eb;}
 [data-theme=dark] .hmx{border-top-color:#2a4035;}
-[data-theme=dark] .chip{background:#182b20;}
 [data-theme=dark] #nav.stuck{background:rgba(11,25,18,.97);}
 [data-theme=dark] .tcq{color:rgba(64,145,108,.12);}
 [data-theme=dark] .about{background:var(--sur);}
@@ -253,17 +252,46 @@ img{display:block;max-width:100%;}
 ═══════════════════════════════════════════════════════ */
 .about{background:var(--sur);}
 .ag{display:grid;grid-template-columns:1fr 1.1fr;gap:80px;align-items:center;}
-.avis{position:relative;}
-.avm{border-radius:24px;aspect-ratio:4/3.2;background:linear-gradient(145deg,var(--g900),var(--g700) 60%,var(--g500));position:relative;box-shadow:0 24px 80px rgba(0,0,0,.14);overflow:hidden;}
-.avm::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);background-size:26px 26px;border-radius:24px;pointer-events:none;z-index:1;}
-.avm canvas{position:absolute;inset:0;width:100%!important;height:100%!important;cursor:grab;opacity:0;transition:opacity .7s ease;touch-action:none;z-index:2;}
-.avm canvas.loaded{opacity:1;}
-.avm canvas:active{cursor:grabbing;}
-.globe-hint{position:absolute;bottom:14px;left:50%;translate:-50% 0;z-index:3;background:rgba(0,0,0,.35);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:rgba(255,255,255,.85);font-size:.63rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:6px 14px;border-radius:50px;opacity:0;animation:hintfade 6s ease-in-out .8s;pointer-events:none;}
-@keyframes hintfade{0%{opacity:0;}12%{opacity:1;}75%{opacity:1;}100%{opacity:0;}}
-.chip{position:absolute;background:var(--sur);border-radius:16px;padding:14px 18px;box-shadow:0 12px 48px rgba(0,0,0,.1);display:flex;gap:10px;align-items:center;}
-.chip1{bottom:-16px;left:-16px;}
-.chip2{top:-16px;right:-16px;flex-direction:column;gap:3px;text-align:center;padding:16px 20px;}
+/* ── 3-Step Green Transformation Pathway (About) ── mobile-first ── */
+@media(min-width:1025px){.about .ag{grid-template-columns:1fr 1fr;align-items:center;}.about .afs{margin-top:0;}}
+.gtp{margin-top:56px;border-radius:24px;padding:36px 32px 40px;position:relative;overflow:hidden;
+  background:linear-gradient(145deg,var(--g900),var(--g700) 60%,var(--g500));box-shadow:0 24px 80px rgba(0,0,0,.14);}
+.gtp::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.05) 1px,transparent 1px);background-size:26px 26px;pointer-events:none;}
+.gtp-head{position:relative;display:flex;align-items:center;gap:10px;margin-bottom:28px;line-height:1.5;font-family:var(--fu);font-size:.68rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:#B7E4C7;}
+.gtp-head::before{content:'';width:26px;height:1.5px;background:#B7E4C7;}
+.gtp-steps{list-style:none;margin:0;padding:0;position:relative;display:grid;grid-template-columns:1fr;gap:44px;}
+.gtp-card{position:relative;min-width:0;display:flex;flex-direction:column;padding:24px 22px;border-radius:18px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);
+  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+  transition:transform .3s ease,border-color .3s ease,background .3s ease;}
+.gtp-card:hover{transform:translateY(-4px);border-color:rgba(82,183,136,.55);background:rgba(255,255,255,.1);}
+/* Connector: down arrow on mobile, right arrow from 768px */
+.gtp-card:not(:last-child)::after{content:'';position:absolute;left:50%;top:100%;width:28px;height:44px;translate:-50% 0;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 44' fill='none' stroke='%2352B788' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 6v26' stroke-dasharray='3 4'/%3E%3Cpath d='m8 30 6 7 6-7'/%3E%3C/svg%3E") center/contain no-repeat;}
+.gtp-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;}
+.gtp-ic{width:46px;height:46px;flex-shrink:0;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(82,183,136,.18);border:1px solid rgba(82,183,136,.32);color:#B7E4C7;}
+.gtp-badge{font-family:var(--fh);font-size:1.6rem;font-weight:900;line-height:1;letter-spacing:-.02em;color:rgba(183,228,199,.38);}
+.gtp-title{font-family:var(--fh);font-size:1.08rem;font-weight:700;line-height:1.28;color:#fff;margin-bottom:10px;}
+.gtp-desc{font-size:.8rem;line-height:1.72;color:rgba(255,255,255,.74);}
+@media(min-width:768px){
+  .gtp{padding:40px 36px 44px;}
+  .gtp-steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:48px;}
+  .gtp-card:not(:last-child)::after{left:100%;top:50%;width:48px;height:28px;translate:0 -50%;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 28' fill='none' stroke='%2352B788' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 14h28' stroke-dasharray='3 4'/%3E%3Cpath d='m33 8 7 6-7 6'/%3E%3C/svg%3E");}
+}
+@media(min-width:768px) and (max-width:1024px){
+  .gtp{padding:32px 24px 36px;}
+  .gtp-steps{gap:36px;}
+  .gtp-card{padding:20px 16px;}
+  .gtp-card:not(:last-child)::after{width:36px;}
+  .gtp-title{font-size:.98rem;}
+  .gtp-desc{font-size:.76rem;}
+}
+@media(max-width:540px){
+  .gtp{margin-top:40px;padding:28px 18px 30px;border-radius:20px;}
+  .gtp-card{padding:20px 18px;}
+}
+@media(prefers-reduced-motion:reduce){.gtp-card,.gtp-card:hover{transition:none;transform:none;}}
 .chv{font-family:var(--fh);font-size:1.3rem;font-weight:900;color:var(--g700);line-height:1;}
 .chl{font-size:.68rem;font-weight:700;color:var(--sub);}
 .afs{margin-top:36px;display:flex;flex-direction:column;gap:14px;}
@@ -531,7 +559,6 @@ footer{background:var(--g900);padding:72px 8% 36px;}
    Three decorative image layers, all z-index:0 and all
    pointer-events:none. They sit strictly BELOW every
    interactive element:
-     globe canvas .......... z:2 (inside .avm)
      orbiting pills ........ z:2 (.orbit-system) / z:6 on hover
      hero glass cards ...... z:2-3
      section content ....... z:1 (via .texture-contour>*)
@@ -621,19 +648,10 @@ footer{background:var(--g900);padding:72px 8% 36px;}
 /* Green tint REMOVED — the photo now shows its original sunset colours.
    (Former .about-parallax::after luminosity tint deleted.) */
 
-/* Neutral readability veil. Weakest on the LEFT (photo shows through beside
-   the globe card) and strongest on the RIGHT, which is where the About copy
-   actually sits — .avis is grid child 1 (left), the text block is child 2. */
-.about-parallax-veil{position:absolute;inset:0;z-index:0;pointer-events:none;
-  background:linear-gradient(90deg,rgba(255,255,255,.42) 0%,rgba(255,255,255,.72) 44%,rgba(255,255,255,.9) 100%);}
-[data-theme=dark] .about-parallax-veil{
-  background:linear-gradient(90deg,rgba(8,14,11,.48) 0%,rgba(8,14,11,.78) 44%,rgba(8,14,11,.92) 100%);}
-/* Below 1024px the grid collapses to one column, so a left-to-right fade no
-   longer tracks the text. Switch to an even wash at full readable strength. */
-@media(max-width:1024px){
-  .about-parallax-veil{background:rgba(255,255,255,.88);}
-  [data-theme=dark] .about-parallax-veil{background:rgba(8,14,11,.9);}
-}
+/* Neutral readability veil. The About copy now spans both columns (intro left,
+   feature list right) with the pathway panel beneath, so use an even wash. */
+.about-parallax-veil{position:absolute;inset:0;z-index:0;pointer-events:none;background:rgba(255,255,255,.88);}
+[data-theme=dark] .about-parallax-veil{background:rgba(8,14,11,.9);}
 /* background-attachment:fixed is ignored/janky on iOS Safari and costs paint
    performance on mobile — fall back to a normal cover image there. */
 @supports not (background-attachment:fixed){.about-parallax::before{background-attachment:scroll;}}
@@ -750,7 +768,7 @@ html{scrollbar-width:thin;scrollbar-color:var(--g600) var(--bg);}
 ═══════════════════════════════════════════════════════════════════════════ */
 
 /* ── 0. Overflow containment ───────────────────────────────────────────────
-   Decorative layers use negative offsets (.leaf-blob -110px, .chip -16px)
+   Decorative layers use negative offsets (.leaf-blob -110px)
    which push past the viewport. overflow-x:clip contains them WITHOUT
    creating a scroll container — unlike overflow:hidden, it does not break
    position:sticky on .tf or the sticky navbar. */
@@ -834,8 +852,6 @@ img,svg,video,canvas{max-width:100%;}
   .leaf-blob-a{width:210px;height:210px;top:-70px;right:-50px;}
   .leaf-blob-b{width:180px;height:180px;bottom:-60px;left:-40px;}
   .leaf-blob-c{width:170px;height:170px;top:-50px;left:-40px;}
-  .chip1{bottom:-10px;left:0;}
-  .chip2{top:-10px;right:0;}
   .pt{height:58px;padding:0 20px;}
   .pt img{height:30px;max-width:92px;}
 }
@@ -1210,24 +1226,39 @@ html.menu-open,body.menu-open{overflow:hidden;}
   <div class="about-parallax-veil" aria-hidden="true"></div>
   <div class="leaf-blob leaf-blob-a" data-speed="0.06" aria-hidden="true"></div>
   <div class="ag">
-    <div class="avis rv">
-      <div class="avm" aria-hidden="true">
-        <canvas id="sgd-globe"></canvas>
-        <span class="globe-hint">Drag to explore</span>
-      </div>
-      <div class="chip chip1"><div style="font-size:1.4rem" aria-hidden="true">♻️</div><div><div class="chv">Net-Zero</div><div class="chl">Pathway Design</div></div></div>
-      <div class="chip chip2"><div style="font-size:1.4rem" aria-hidden="true">📊</div><div class="chv">ESG</div><div class="chl">Reporting</div></div>
-    </div>
-    <div>
+    <div class="aintro">
       <div class="stag rv">Who We Are</div>
       <h2 id="about-heading" class="sh rv d1">Where Strategy Meets<br/><em style="font-style:italic;color:var(--g600)">Sustainability.</em></h2>
       <p class="sp rv d2">Backed by a strong and proven track record of real, high-impact results, we are committed to driving sustainable growth across emerging industries in Vietnam and Asia.</p>
-      <div class="afs">
+    </div>
+    <div class="afs">
         <div class="afi rv d1"><div class="afic" aria-hidden="true">🎯</div><div><h4>Strategic ESG Roadmapping</h4><p>Bespoke ESG frameworks aligned with your business model, benchmarks, and investor expectations.</p></div></div>
         <div class="afi rv d2"><div class="afic" aria-hidden="true">🌐</div><div><h4>Global Standards, Local Expertise</h4><p>International green certification knowledge combined with on-the-ground regional market understanding.</p></div></div>
         <div class="afi rv d3"><div class="afic" aria-hidden="true">📈</div><div><h4>Measurable Impact</h4><p>Every engagement built around quantifiable outcomes — verified certifications, improved ESG scores, funded projects.</p></div></div>
-      </div>
     </div>
+  </div>
+
+  <!-- 3-Step Green Transformation Pathway (replaces the former canvas globe).
+       Pure HTML/CSS + inline Lucide SVG icons: no canvas, no WebGL, no JS. -->
+  <div class="gtp rv d1" role="region" aria-labelledby="gtp-heading">
+    <h3 id="gtp-heading" class="gtp-head">Green Transformation Pathway</h3>
+    <ol class="gtp-steps">
+      <li class="gtp-card">
+        <div class="gtp-top"><span class="gtp-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m8 11 2 2 4-4"/><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span><span class="gtp-badge">01</span></div>
+        <h4 class="gtp-title">Assessment &amp; Baseline Accounting</h4>
+        <p class="gtp-desc">Comprehensive carbon footprint measurement, ESG readiness audits, and identification of critical compliance gaps against global standards.</p>
+      </li>
+      <li class="gtp-card">
+        <div class="gtp-top"><span class="gtp-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m16.24 7.76-1.804 5.411a2 2 0 0 1-1.265 1.265L7.76 16.24l1.804-5.411a2 2 0 0 1 1.265-1.265z"/><circle cx="12" cy="12" r="10"/></svg></span><span class="gtp-badge">02</span></div>
+        <h4 class="gtp-title">Strategy &amp; ESG Roadmap</h4>
+        <p class="gtp-desc">Developing tailored Net-Zero pathways, resource optimization strategies, and transparent reporting frameworks aligned with international criteria.</p>
+      </li>
+      <li class="gtp-card">
+        <div class="gtp-top"><span class="gtp-ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg></span><span class="gtp-badge">03</span></div>
+        <h4 class="gtp-title">Implementation &amp; Green Value</h4>
+        <p class="gtp-desc">Guiding businesses through green certifications, sustainable operational efficiencies, and unlocking long-term market competitiveness.</p>
+      </li>
+    </ol>
   </div>
 </section>
 
@@ -2047,202 +2078,5 @@ if (loadMoreBtn) {
 })();
 </script>
 
-<!-- ── 3D Hologram Globe — rebuilt from scratch, zero dependencies ─────────────
-     Pure Canvas 2D + hand-written 3D math. No external library, no CDN, no
-     ES module import. This sidesteps every failure mode of the previous
-     WebGL-library attempts (CDN transform issues, file:// module blocking,
-     GPU/extension quirks) because there is nothing left to fail except our
-     own, fully-inspectable code below. ──────────────────────────────────── -->
-<script>
-(function initHologramGlobe() {
-  'use strict';
-  const canvas = document.getElementById('sgd-globe');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return;
-
-  // ── Real coastline data, embedded as a compact bit-packed land/sea grid ────
-  //    Rasterized from Natural Earth's public-domain 110m land polygons
-  //    (naturalearthdata.com, via nvkelso/natural-earth-vector on GitHub) at
-  //    1° resolution (360×180 cells, 8,100 bytes → 10.8KB base64). This is
-  //    real coastline geometry, not an approximation — every continent's
-  //    actual shape is represented, not a guessed bounding box.
-  const LANDMASK_B64 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADg/wEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADA/v8/AOD//z8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD+///D/////5//AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPAH/j/+//////8PAAAAgB0AAHgAAAAAAD8AAAAAAAAAAAAAAAAAAAAAAAAAAOD//wP8//////8BAACAfx4AAAAAAAAAAP4AAAAAAAAAAAAAAAAAAAAAAAA4+I73//n///////8AAAAAfwAAAAAAAAAAAAAfAAAAAAAAAAAAAAAAAAAAAOAQACDwP4D///////8BAAAAPAQAAAAAAAAAAAAYAAAAAAAAAAAAAAAAAAAAADzAgPP5H8D//////38AAAAAAAAAAAAA4AEAAAD+DwAAAAAAAAAAAAAAAAAAAIC/g7PfBwAA/v////8AAAAAAAAAAADgBwAAwP//PwAA4B8AAAAAAAAAAAAAAAAMAAD8AgAA+P////8AAAAAAAAAAABwAAAA/P//AwAAAAAAAAAAAAAAAAAAAP8Ahvc5OwAA8P///38AAAAAAAAAAAAcAADg////34cHAAcAAAAAAAAAAAAAgN9/xzf8RwAA4P///z8AAAAAAAAAAAAPAB7g//////8fgB8AAAAAAQAAAAAAAO//B3f8/wsA4P///z8AAAAAAAAAAAAPAG////////8f2f8HAAAAAAD4HwAAAAD8H/D4/38A4P///xMAAAAAAPAHAAAAgN//////////////DwAAAAD+///h/4//H+/Bg/8BwP7//w8AAAAAwP8fAAAAj9///////////////88/AeD///////8DB8TPB/4AAP///wAAAAAA8P//AwDjf77/////////////////DwD////////////vh/kPwP//BwAAAAAA/P//H/P//5//////////////////34H8////////////Afw/gP//AQAAAAAA/v+fH////+///////////////////vD///////////9fAPwYgP8PAOA/AAAA/+N/8P//////////////////////QID4///////////Pw/0DAP8HAMAfAACA//F//v////////////////////8/AAP4///////////BBPAHAP4HAAAAAADg//z///////////////////////9/AID///////////8AQ8ABAPwBAAAAAAD8P/7///////////////////////9fAMD//////////z8AwA8AAPgBAAAAAAD+H/7/////////////////////Of8BAID///z//////z8AwD8AAMABAAAAAAD+P/z///////////////////9/wH8AAAD8MwD//////x8AwH8MAAAAAAAAAAD+P2D///////////////////95cAAAAACAAwD8/////38AwP8eAAAAAAAAgAGcH/D//////////////////wEAOAAAAADADgDA/////38AgP8/AAAAAAAAwANAH/T//////////////////wAAfgAAAAAwAAAA//////8PgP8/AAAAAAAAwAFwD/7/////////////////PwAAfwAAAAAGAAAA//////8/wP//AAAAAAAAwAOwA/7/////////////////DwCAPwAAAIAAAAAA/v//////8///BwAAAAAAOAcgcP//////////////////HwAAHwAAAAAAAACA+P//////4///DwAAAAAAOA74/////////////////////wUADwAAAAAAAAAA8P//////4///DwAAAAAAGD///////////////////////wUAAwAAAAAAAAAA8P//////7///FwAAAAAAAB///////////////////////wUAAgAAAAAAAAAA0P//////////DAAAAAAAgOH//////////////////////w0AAAAAAAAAAAAAYP////////8xLAAAAAAAAPz//////////////////////wwAAAAAAAAAAAAAAP7//////38HfgAAAAAAgP///////////////////////wQAAAAAAAAAAAAAAP3///////8HUAAAAAAAAP7/////////////////////fwQAAAAAAAAAAAAAAP////////+XAAAAAAAAAPz///93/P//////////////PwwAAAAAAAAAAAAAAP////////9/AAAAAAAAAPj//f9j/v//////////////HwAAAAAAAAAAAAAAAP////////8MAAAAAAAAAPj/+P8B/P//////////////DwQAAAAAAAAAAAAAAP///////z8AAAAAAAAAcPzH8/8A8P//////////////Bx4AAAAAAAAAAAAAAP///////x8AAAAAAAAA+H+Aw/8AwP////////////9/AA8AAAAAAAAAAAAAAP///////x8AAAAAAAAA+D8Aj//w4f////////////8/AAAAAAAAAAAAAAAAAP///////wMAAAAAAAAA+B8wuE/+/////////////98fAAMAAAAAAAAAAAAAAP///////wMAAAAAAAAA+A8wEMf//////////////0cOAAMAAAAAAAAAAAAAAP7//////wEAAAAAAAAA+A8AAI7//////////////wMOAAEAAAAAAAAAAAAAAP7//////wAAAAAAAAAA+AcABob//////////////zccwAEAAAAAAAAAAAAAAPz//////wAAAAAAAAAAQOB/AAQ2/////////////x8c8AEAAAAAAAAAAAAAAPj//////wAAAAAAAAAAQPx/AAAA/////////////w8Y/gEAAAAAAAAAAAAAAPD/////fwAAAAAAAAAA4P8/AAAA/////////////w+EGwAAAAAAAAAAAAAAAMD/////HwAAAAAAAAAA8P9/AACA/////////////x/AAwAAAAAAAAAAAAAAAID/////DwAAAAAAAAAA+P//BwaA/////////////x/AAAAAAAAAAAAAAAAAAID9////BwAAAAAAAAAA/P//D3+E/////////////z9AAAAAAAAAAAAAAAAAAAD5////BwAAAAAAAAAA/P//f////////////////x8AAAAAAAAAAAAAAAAAAADy/x8GBgAAAAAAAAAA/P/////v/8///////////z8AAAAAAAAAAAAAAAAAAAD0/w8ABgAAAAAAAAAA/v////+//4///////////z8AAAAAAAAAAAAAAAAAAADu/wcADgAAAAAAAACA//////8f/x/+/////////x8AAAAAAAAAAAAAAAAAAACI/wcALAAAAAAAAADA//////8//z/g/////////w8AAAAAAAAAAAAAAAAAAACQ/wcACAAAAAAAAADg//////9//r+A/////////wcAAAAAAAAAAAAAAAAAAAAQ/wMAAAAAAAAAAADg//////9//n8cgP///////ycAAAAAAAAAAAAAAAAAAAAA/gMAAAAAAAAAAADw////////+P9/AP///////xEAAAAAAAAAAAAAAAAAAAAA/AMAHQAAAAAAAADw////////+P//APz/f///fxAAAAAAAAAAAAAAAAAAAAAA+AcAYAAAAAAAAAD4////////+f9/APz/B///BgAAAAAAAAAAAAAAAAAAAAAA/AccgAEAAAAAAADw////////8f9/AOD/B/5/AAAAAAAAAAAAAAAAAQAAAAAA+A8eADgAAAAAAADw////////4f8/AOD/Afw/BgAAAAAAAAAAAAAAAAAAAAAA8J8PAPwCAAAAAADw////////4/8fAOD/APw/AgAAAAAAAAAAAAAAAAAAAAAAgP8PAAAAAAAAAADw////////x/8HAOB/APx/ADAAAAAAAAAAAAAAAAAAAAAAAP4PAAAAAAAAAAD4////////h/8BAOA/APz/ADAAAAAAAAAAAAAAAAAAAAAAAID/AAAAAAAAAAD4////////j/8AAMAPAMD/ATAAAAAAAAAAAAAAAAAAAAAAAAD/AQAAAAAAAAD4////////nx8AAMAPAMD/ATAAAAAAAAAAAAAAAAAAAAAAAAD8AAAAAAAAAAD4////////vwcAAIAPAMD/AcAAAAAAAAAAAAAAAAAAAAAAAADgAQAAAAAAAAD4////////fwAAAIAPAMD8AQABAAAAAAAAAAAAAAAAAAAAAADAAAgAAAAAAADw////////f2AAAAAPAID4AUACAAAAAAAAAAAAAAAAAAAAAADAAe9TAAAAAADg/////////34AAAAPAEBwAAgAAAAAAAAAAAAAAAAAAAAAAAAAE+9/AAAAAADA/////////38AAAAXAEAgAAQCAAAAAAAAAAAAAAAAAAAAAAAAz///AAAAAACA/////////z8AAAASAMAAAIACAAAAAAAAAAAAAAAAAAAAAAAAyP//AQAAAACA/////////z8AAAAwAIAAAEAHAAAAAAAAAAAAAAAAAAAAAAAAgP//AwAAAAAA/v///////x8AAAAwAAADAAMBAAAAAAAAAAAAAAAAAAAAAAAAwP//fwAAAAAA/A/+/////x8AAAAAAAAHAAcAAAAAAAAAAAAAAAAAAAAAAAAAgP///wAAAAAAEAD8/////w8AAAAAADAGwAcAAAAAAAAAAAAAAAAAAAAAAAAAgP///wEAAAAAAADA/////wcAAAAAAGAG4AEAAAAAAAAAAAAAAAAAAAAAAAAA4P///wEAAAAAAADA/////wMAAAAAAMAM+AMAAAAAAAAAAAAAAAAAAAAAAAAA4P///wMAAAAAAADg/////wEAAAAAAIAL/gMQAAAAAAAAAAAAAAAAAAAAAAAA8P///wMAAAAAAADg////fwAAAAAAAIAH/vMQAAAAAAAAAAAAAAAAAAAAAAAA8P///wcAAAAAAADg////PwAAAAAAAAAP/gMAAQAAAAAAAAAAAAAAAAAAAAAA+P///38AAAAAAADg////PwAAAAAAAAAO/DmAAwAAAAAAAAAAAAAAAAAAAAAA+P///38BAAAAAADA////HwAAAAAAAAA+/DkA8gAAAAAAAAAAAAAAAAAAAAAA8P////8fAAAAAACA////DwAAAAAAAAA8wChE/gcAAAAAAAAAAAAAAAAAAAAA+P////8/AAAAAACA////BwAAAAAAAAA4AEAA8B8AAAAAAAAAAAAAAAAAAAAA+P//////AQAAAAAA////BwAAAAAAAAAwAEAAxD8NAAAAAAAAAAAAAAAAAAAA+P//////AQAAAAAA////BwAAAAAAAADAAQAAxP+AAAAAAAAAAAAAAAAAAAAA8P//////AQAAAAAA/v//BwAAAAAAAACAHwAAwH8ABAAAAAAAAAAAAAAAAAAA4P//////AQAAAAAA/v//BwAAAAAAAAAAQFYEAMcAAAAAAAAAAAAAAAAAAAAA4P//////AAAAAAAA/v//DwAAAAAAAAAAAAgBAIABMAAAAAAAAAAAAAAAAAAAwP//////AAAAAAAA/v//DwAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAgP////9/AAAAAAAA/P//DwAAAAAAAAAAAAAAAQQAAAAAAAAAAAAAAAAAAAAAgP////8/AAAAAAAA/v//HyAAAAAAAAAAAACAHwQAAAAAAAAAAAAAAAAAAAAAAP////8fAAAAAAAA/v//HyAAAAAAAAAAAADADwwAAAAAAAAAAAAAAAAAAAAAAP////8fAAAAAAAA////HzAAAAAAAAAAAADsDxwAAAAAAAAAAAAAAAAAAAAAAP7///8fAAAAAAAA////DzgAAAAAAAAAAAD/DxwAAAAAAAAAAAAAAAAAAAAAAPj///8fAAAAAAAA////Dz8AAAAAAAAAAAD/Pz4AAAiAAAAAAAAAAAAAAAAAAOD///8fAAAAAAAA////Ax8AAAAAAAAAAMD//z4AAABAAAAAAAAAAAAAAAAAAMD///8PAAAAAAAA////AB8AAAAAAAAAAMD//z8AAAAAAAAAAAAAAAAAAAAAAMD///8PAAAAAAAA/v9/AB8AAAAAAAAAAOD//38AAAAAAAAAAAAAAAAAAAAAAMD///8PAAAAAAAA/v9/AB8AAAAAAAAAAPz///8BAAEAAAAAAAAAAAAAAAAAAMD///8HAAAAAAAA/P9/gA8AAAAAAAAAgP////8BAAIAAAAAAAAAAAAAAAAAAMD///8DAAAAAAAA/P//gA8AAAAAAAAAwP////8DAAAAAAAAAAAAAAAAAAAAAMD//38AAAAAAAAA/P9/AA8AAAAAAAAAwP////8HAAAAAAAAAAAAAAAAAAAAAOD//x8AAAAAAAAA+P9/AAcAAAAAAAAA4P////8PAAAAAAAAAAAAAAAAAAAAAOD//w8AAAAAAAAA+P8fAAIAAAAAAAAAwP////8fAAAAAAAAAAAAAAAAAAAAAOD//wcAAAAAAAAA+P8fAAAAAAAAAAAA4P////8fAAAAAAAAAAAAAAAAAAAAAOD//wcAAAAAAAAA+P8fAAAAAAAAAAAAwP////8fAAAAAAAAAAAAAAAAAAAAAOD//wcAAAAAAAAA8P8PAAAAAAAAAAAAgP////8/AAAAAAAAAAAAAAAAAAAAAOD//wMAAAAAAAAA4P8HAAAAAAAAAAAAgP////8fAAAAAAAAAAAAAAAAAAAAAPD//wMAAAAAAAAA4P8HAAAAAAAAAAAAgP////8fAAAAAAAAAAAAAAAAAAAAAPD//wEAAAAAAAAAwP8DAAAAAAAAAAAAAP////8fAAAAAAAAAAAAAAAAAAAAAOD//wAAAAAAAAAAwP8BAAAAAAAAAAAAAP8D/P8PAAAAAAAAAAAAAAAAAAAAAPD/fwAAAAAAAAAAwH8AAAAAAAAAAAAAgP8A2P8HAAAAAAAAAAAAAAAAAAAAAPD/OwAAAAAAAAAAgAEAAAAAAAAAAAAAAAcA6P8HAAAAAAAAAAAAAAAAAAAAAPj/BwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwP8DAAACAAAAAAAAAAAAAAAAAPj/BwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP8DAAAEAAAAAAAAAAAAAAAAAPz/BwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP8DAAAIAAAAAAAAAAAAAAAAAPj/AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGgAAAA4AAAAAAAAAAAAAAAAAPg/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAAAPw/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAAAPwHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAAAAALAAAAAAAAAAAAAAAAAPwfAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAAAIADAAAAAAAAAAAAAAAAAPgHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAMABAAAAAAAAAAAAAAAAAPwHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAAAAAP4BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHgAAAAAAAAAAAAAAAAAAP4BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAAAAAAAAAAAAAAAAP4DAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP8BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP8AAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH6AAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPADAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAOAAAAAAAAAAAAAAAAAIAfAAAAAAAeeADADwAAAAAAAAAAAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAAAPD/AADA/////////z8AAAAAAAAAAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAAgP///wH4//////////8DAAAAAAAAAAAAAAAAAAAAADAfAAAAAAAAAAAAAADw8////wP+////////////AwAAAAAAAAAAAAAAAAAAAHA/AAAAAAAAAAA8//P//////+D/////////////HwAAAAAAAAAAAAAAAAAAAP5+AAAAAAAA5v////////////D//////////////38AAAAAAAAAAAAAAAAAAAB+AAAAAACA/////////////////////////////38AAAAAAAAAYAYA4ON/OPh/AAAAAADw/////////////////////////////x8AAAAAAADwv/MXgP////8fAAAAAADw/////////////////////////////wMAAAAAAPz///////////8HAAAAAAD+/////////////////////////////wAAAAAAAPz//////////z8AAAAAAP///////////////////////////////wAAAADA/////////////wEAAAAA8P///////////////////////////////wAAAACH////////////PwAAAPgA/////////////////////////////////wcAAAAcgP//////////fwAAAP4BwP//////////////////////////////HwAAAAAAAP7//////////wf8wD8AwP//////////////////////////////DwAAAAAA/v////////////8HAAD4////////////////////////////////HwAAAAAA+P//////////////4f///////////////////////////////////wAAAAAA/P///////////////////////////////////////////////////x8A3x8AAP7///////////////////////////////////////////////////8/////f///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////";
-  const landmaskBytes = Uint8Array.from(atob(LANDMASK_B64), c => c.charCodeAt(0));
-  const MASK_W = 360, MASK_H = 180;
-
-  function isLand(lat, lng) {
-    let row = Math.floor(90 - lat);   // lat=90 -> row 0 (north pole), lat=-90 -> row 180
-    let col = Math.floor(lng + 180);  // lng=-180 -> col 0, lng=180 -> col 360
-    row = Math.max(0, Math.min(MASK_H - 1, row));
-    col = Math.max(0, Math.min(MASK_W - 1, col));
-    const idx = row * MASK_W + col;
-    return ((landmaskBytes[idx >> 3] >> (idx & 7)) & 1) === 1;
-  }
-
-  // ── Evenly distribute points across the sphere (Fibonacci sphere algorithm) ─
-  const SAMPLE_COUNT = 2800;
-  const basePoints = [];
-  const goldenAngle = Math.PI * (3 - Math.sqrt(5));
-  for (let i = 0; i < SAMPLE_COUNT; i++) {
-    const y = 1 - (i / (SAMPLE_COUNT - 1)) * 2;           // 1 → -1
-    const radiusAtY = Math.sqrt(Math.max(0, 1 - y * y));
-    const theta = goldenAngle * i;
-    const x = Math.cos(theta) * radiusAtY;
-    const z = Math.sin(theta) * radiusAtY;
-    const lat = Math.asin(y) * (180 / Math.PI);
-    const lng = Math.atan2(z, x) * (180 / Math.PI);
-    basePoints.push({ x, y, z, land: isLand(lat, lng) });
-  }
-
-  // ── City markers — SGD Consulting's footprint across Asia ──────────────────
-  const markerLatLng = [
-    [21.0278, 105.8342], // Hanoi
-    [10.8231, 106.6297], // Ho Chi Minh City
-    [13.7563, 100.5018], // Bangkok
-    [1.3521,  103.8198], // Singapore
-    [22.3193, 114.1694], // Hong Kong
-    [35.6762, 139.6503], // Tokyo
-    [3.139,   101.6869], // Kuala Lumpur
-  ];
-  const markers = markerLatLng.map(([lat, lng]) => {
-    const latRad = lat * Math.PI / 180;
-    const lngRad = lng * Math.PI / 180;
-    return {
-      x: Math.cos(latRad) * Math.cos(lngRad),
-      y: Math.sin(latRad),
-      z: Math.cos(latRad) * Math.sin(lngRad)
-    };
-  });
-
-  // ── 4. Canvas resolution: parent container size × devicePixelRatio ─────────
-  let cssWidth = 0, cssHeight = 0;
-  let centerX = 0, centerY = 0, sphereRadius = 0;
-
-  function resize() {
-    const rect = canvas.parentElement.getBoundingClientRect();
-    cssWidth = rect.width;
-    cssHeight = rect.height;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.round(cssWidth * dpr);
-    canvas.height = Math.round(cssHeight * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // draw in CSS-pixel space, render at full DPR
-    centerX = cssWidth / 2;
-    centerY = cssHeight / 2;
-    sphereRadius = Math.min(cssWidth, cssHeight) * 0.42;
-  }
-  resize();
-  window.addEventListener('resize', resize, { passive: true });
-
-  // ── 3. Focus & animation: a fixed tilt + spin=0 already faces roughly 90°E,
-  //     right next to our Asia region — so Asia is visible immediately, not
-  //     just "eventually" after rotating. Verified by the projection math
-  //     itself, not guessed. ───────────────────────────────────────────────
-  let spinAngle = 0;
-  const tiltAngle = 0.32;
-  let isDragging = false;
-  let lastPointerX = 0;
-
-  function project(p) {
-    // Fixed tilt (rotate around X axis)
-    const cosT = Math.cos(tiltAngle), sinT = Math.sin(tiltAngle);
-    const y1 = p.y * cosT - p.z * sinT;
-    const z1 = p.y * sinT + p.z * cosT;
-    const x1 = p.x;
-
-    // Spin (rotate around Y axis — this is what auto-rotate/drag animates)
-    const cosS = Math.cos(spinAngle), sinS = Math.sin(spinAngle);
-    const x2 = x1 * cosS + z1 * sinS;
-    const z2 = -x1 * sinS + z1 * cosS;
-    const y2 = y1;
-
-    return {
-      sx: centerX + x2 * sphereRadius,
-      sy: centerY - y2 * sphereRadius,
-      depth: z2 // -1 (far side) .. +1 (facing the viewer)
-    };
-  }
-
-  function render() {
-    ctx.clearRect(0, 0, cssWidth, cssHeight);
-
-    // Soft glowing rim around the sphere's silhouette
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, sphereRadius, 0, Math.PI * 2);
-    ctx.strokeStyle = 'rgba(120, 255, 190, 0.55)';
-    ctx.lineWidth = 1.5;
-    ctx.shadowColor = 'rgba(90, 255, 170, 0.9)';
-    ctx.shadowBlur = 18;
-    ctx.stroke();
-    ctx.restore();
-
-    // Dot-matrix continents
-    for (let i = 0; i < basePoints.length; i++) {
-      const p = basePoints[i];
-      if (!p.land) continue;
-      const pr = project(p);
-      if (pr.depth < -0.08) continue; // back-facing — skip
-      const alpha = Math.max(0, Math.min(1, (pr.depth + 0.08) / 0.5));
-      const size = 1.1 + alpha * 0.9;
-      ctx.beginPath();
-      ctx.arc(pr.sx, pr.sy, size, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(70, 210, 145, ${0.25 + alpha * 0.65})`;
-      ctx.fill();
-    }
-
-    // Glowing city markers
-    for (let i = 0; i < markers.length; i++) {
-      const pr = project(markers[i]);
-      if (pr.depth < -0.05) continue;
-      const alpha = Math.max(0, Math.min(1, (pr.depth + 0.05) / 0.4));
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(pr.sx, pr.sy, 3 + alpha * 1.5, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(140, 255, 200, ${0.5 + alpha * 0.5})`;
-      ctx.shadowColor = 'rgba(140, 255, 200, 0.9)';
-      ctx.shadowBlur = 10;
-      ctx.fill();
-      ctx.restore();
-    }
-  }
-
-  function animate() {
-    if (!isDragging) spinAngle += 0.0025; // gentle continuous auto-rotate
-    render();
-    requestAnimationFrame(animate);
-  }
-
-  // ── Drag-to-rotate interaction (mouse + touch) ──────────────────────────────
-  function onDown(e) {
-    isDragging = true;
-    lastPointerX = e.touches ? e.touches[0].clientX : e.clientX;
-    canvas.style.cursor = 'grabbing';
-  }
-  function onMove(e) {
-    if (!isDragging) return;
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    spinAngle += (clientX - lastPointerX) * 0.005;
-    lastPointerX = clientX;
-  }
-  function onUp() {
-    isDragging = false;
-    canvas.style.cursor = 'grab';
-  }
-
-  canvas.addEventListener('pointerdown', onDown);
-  window.addEventListener('pointermove', onMove);
-  window.addEventListener('pointerup', onUp);
-  canvas.addEventListener('touchstart', onDown, { passive: true });
-  window.addEventListener('touchmove', onMove, { passive: true });
-  window.addEventListener('touchend', onUp);
-  canvas.style.cursor = 'grab';
-
-  // ── 5. Reveal the canvas once the first frame has painted ──────────────────
-  requestAnimationFrame(() => requestAnimationFrame(() => canvas.classList.add('loaded')));
-
-  animate();
-})();
-</script>
 </body>
 </html>
