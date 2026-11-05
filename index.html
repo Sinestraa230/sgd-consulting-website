@@ -170,11 +170,6 @@ img{display:block;max-width:100%;}
 .lf:nth-child(2){width:80px;height:80px;top:14%;right:18%;transform:rotate(-30deg);}
 .lf:nth-child(3){width:44px;height:44px;top:38%;right:9%;transform:rotate(20deg);animation-delay:1.5s;}
 @keyframes lfx{0%,100%{transform:rotate(inherit) translateY(0);}50%{transform:rotate(inherit) translateY(-14px);}}
-.hrc{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:flex-end;padding:48px;}
-.gc{background:rgba(13,43,26,.52);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.18);border-radius:24px;padding:28px 32px;color:#fff;}
-.gc-ey{font-size:.65rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.85);margin-bottom:10px;}
-.gc h3{font-family:var(--fh);font-size:1.35rem;font-style:normal;font-weight:700;margin-bottom:12px;line-height:1.25;}
-.gc p{font-size:.82rem;line-height:1.7;color:rgba(255,255,255,.9);}
 .hbdg{position:absolute;top:48px;left:44px;background:rgba(13,43,26,.52);border:1px solid rgba(255,255,255,.2);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:16px;padding:14px 18px;color:#fff;display:flex;gap:12px;align-items:center;z-index:3;animation:bf 4s ease-in-out infinite;}
 @keyframes bf{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
 .bv{font-family:var(--fh);font-size:1.5rem;font-weight:900;line-height:1;}
@@ -187,56 +182,50 @@ img{display:block;max-width:100%;}
 .hric .hric-v{font-family:var(--fh);font-size:1.25rem;font-weight:900;line-height:1;}
 .hric .hric-l{font-size:.6rem;font-weight:700;letter-spacing:.04em;opacity:1;margin-top:3px;white-space:nowrap;}
 .hric1{top:16%;right:9%;animation-delay:.3s;}
-.hric2{top:52%;left:6%;animation-delay:1.2s;}
-.hric3{bottom:30%;right:6%;animation-delay:2.1s;}
 @keyframes hricfloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
 
 /* ═══════════════════════════════════════════════════════
-   ORBITING ECOSYSTEM — dashed rings + counter-rotating pills
-   Technique: parent .orbiter spins via the `rotate` custom
-   property (not the `transform` shorthand) so a child pill
-   can independently animate `rotate` in the opposite
-   direction — the two cancel out, keeping pill text upright
-   while it travels around the ring. Hover/focus then only
-   needs to set `scale` + box-shadow with zero conflict.
+   DATA GROWTH TREE — replaces the former orbiting pills.
+   Lines are one inline SVG (viewBox 0–100, stretched to the box,
+   non-scaling strokes); nodes are HTML positioned in % of the same
+   box, so lines and cards stay aligned at every size. Two line sets:
+   --wide for the desktop panel, --narrow for the stacked mobile panel.
+   Desktop: the tree fills the panel below the SGD badge and the 50+
+   counter (which end at ≈24% of panel height).
 ═══════════════════════════════════════════════════════ */
-.orbit-system{position:absolute;top:28%;left:38%;width:0;height:0;z-index:2;}
-.orbit-ring{position:absolute;top:50%;left:50%;translate:-50% -50%;border:1px dashed rgba(255,255,255,.16);border-radius:50%;pointer-events:none;}
-.orbit-ring.r1{width:190px;height:190px;}
-.orbit-ring.r2{width:270px;height:270px;}
-.orbit-ring.r3{width:340px;height:340px;}
+.dgt{position:absolute;left:6%;right:6%;top:26%;bottom:9%;z-index:3;pointer-events:none;
+  font-size:clamp(10px,.84vw,12.5px);--x:50%;--y:50%;}
+.dgt::after{content:'';position:absolute;left:50%;bottom:-2%;width:46%;height:20%;translate:-50% 0;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(82,183,136,.42),transparent);filter:blur(6px);animation:dgt-pulse 4.5s ease-in-out infinite;}
+.dgt-defs{position:absolute;}
+.dgt-lines{position:absolute;inset:0;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 0 3px rgba(82,183,136,.55));}
+.dgt-lines path{fill:none;stroke-width:2;vector-effect:non-scaling-stroke;stroke-linecap:round;}
+.dgt-lines .dgt-root{stroke-width:1.5;}
+.dgt-lines .dgt-flow{stroke:#B7E4C7;stroke-width:2;stroke-dasharray:2 14;opacity:.75;animation:dgt-flow 3.2s linear infinite;}
+.dgt-lines--narrow{display:none;}
+.dgt-node{position:absolute;left:var(--x);top:var(--y);translate:-50% -50%;pointer-events:auto;
+  display:flex;align-items:center;gap:.65em;width:max-content;max-width:19em;padding:.6em 1em .6em .6em;border-radius:1.05em;
+  background:rgba(10,24,17,.7);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  border:1px solid rgba(82,183,136,.32);box-shadow:0 8px 24px rgba(0,0,0,.25);
+  color:#fff;font-size:1em;font-weight:700;line-height:1.25;letter-spacing:.02em;
+  transition:scale .3s ease,border-color .3s ease,box-shadow .3s ease;}
+.dgt-node:hover,.dgt-node:active{scale:1.05;border-color:#52B788;box-shadow:0 10px 30px rgba(0,0,0,.3),0 0 22px rgba(82,183,136,.35);}
+.dgt-ic{width:2.3em;height:2.3em;flex-shrink:0;border-radius:.7em;display:grid;place-items:center;background:rgba(82,183,136,.18);color:#B7E4C7;}
+.dgt-ic svg{width:1.35em;height:1.35em;}
+.dgt-t{min-width:0;}
+.dgt-t small{display:block;margin-bottom:.2em;font-size:.78em;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:#95d5b2;}
+.dgt-node--key{font-size:1.06em;border-color:rgba(82,183,136,.5);background:rgba(13,43,26,.78);}
+.dgt-node--key .dgt-ic{background:rgba(82,183,136,.28);color:#D8F3DC;}
+.dgt-cert{--x:29%;--y:6%;}  .dgt-roi{--x:71%;--y:6%;}
+.dgt-decarb{--x:18%;--y:34%;} .dgt-eff{--x:82%;--y:34%;}
+.dgt-core{--x:50%;--y:60%;}  .dgt-base{--x:50%;--y:84%;}
+/* Narrow desktops: smaller cards so the outer branches stay inside the panel */
+@media(min-width:1025px) and (max-width:1279px){.dgt{font-size:9.5px;}.dgt-node{max-width:15.5em;}}
+@keyframes dgt-flow{to{stroke-dashoffset:-32;}}
+@keyframes dgt-pulse{0%,100%{opacity:.65;}50%{opacity:1;}}
+@media(prefers-reduced-motion:reduce){.dgt-lines .dgt-flow{animation:none;display:none;}.dgt::after{animation:none;}.dgt-node{transition:none;}}
 
-.orbiter{position:absolute;top:0;left:0;width:0;height:0;animation:orbit-cw 20s linear infinite;will-change:rotate;}
-.orbiter.ccw{animation-name:orbit-ccw;}
-.orbiter1{animation-duration:20s;}
-.orbiter2{animation-duration:30s;animation-delay:-9s;}
-.orbiter3{animation-duration:26s;animation-delay:-16s;}
-.orbiter4{animation-duration:22s;animation-delay:-4s;}
-
-.arm{position:absolute;top:0;left:0;}
-.arm1{transform:translateX(95px);}
-.arm2{transform:translateX(-135px);}
-.arm3{transform:translateX(170px);}
-.arm4{transform:translateX(-95px);}
-
-.pill{position:absolute;top:0;left:0;translate:-50% -50%;background:rgba(13,43,26,.52);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:.68rem;font-weight:800;letter-spacing:.05em;padding:7px 15px;border-radius:50px;white-space:nowrap;cursor:default;pointer-events:auto;animation:counter-cw 20s linear infinite;transition:scale .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s ease,background .3s ease;will-change:rotate,scale;}
-.pill.ccw{animation-name:counter-ccw;}
-.pill1{animation-duration:20s;}
-.pill2{animation-duration:30s;animation-delay:-9s;}
-.pill3{animation-duration:26s;animation-delay:-16s;}
-.pill4{animation-duration:22s;animation-delay:-4s;}
-
-.pill:hover,.pill:focus-visible{scale:1.16;background:rgba(82,183,136,.35);box-shadow:0 0 26px rgba(82,183,136,.65),0 0 10px rgba(255,255,255,.35);z-index:6;outline:none;}
-
-/* Pause the ENTIRE orbit system when any pill is hovered/focused (JS toggles .paused) */
-.orbit-system.paused .orbiter,.orbit-system.paused .pill{animation-play-state:paused;}
-
-@keyframes orbit-cw{from{rotate:0deg;}to{rotate:360deg;}}
-@keyframes orbit-ccw{from{rotate:0deg;}to{rotate:-360deg;}}
-@keyframes counter-cw{from{rotate:0deg;}to{rotate:-360deg;}}
-@keyframes counter-ccw{from{rotate:0deg;}to{rotate:360deg;}}
-
-@media(max-width:1024px){.hric,.orbit-system{display:none;}}
+@media(max-width:1024px){.hric{display:none;}}
 
 /* ═══════════════════════════════════════════════════════
    SECTION SHELLS
@@ -462,7 +451,6 @@ img{display:block;max-width:100%;}
 .toast-msg{flex-grow:1;line-height:1.4;}
 .toast-close{background:none;border:none;color:rgba(255,255,255,.7);cursor:pointer;font-size:1rem;line-height:1;padding:2px;flex-shrink:0;}
 .toast-close:hover{color:#fff;}
-@media(max-width:540px){.toast-container{bottom:84px;}}
 
 /* ═══════════════════════════════════════════════════════
    FOOTER
@@ -482,14 +470,6 @@ footer{background:var(--g900);padding:72px 8% 36px;}
 .fc a:hover{color:#52B788;}
 .fb{border-top:1px solid rgba(255,255,255,.07);padding-top:24px;display:flex;justify-content:space-between;font-size:.74rem;color:rgba(255,255,255,.5);flex-wrap:wrap;gap:8px;}
 
-/* ═══════════════════════════════════════════════════════
-   FLOATING CTA
-═══════════════════════════════════════════════════════ */
-.fcta{position:fixed;bottom:28px;right:28px;z-index:98;background:var(--g800);color:#fff;display:flex;align-items:center;gap:9px;padding:12px 22px;border-radius:50px;font-family:var(--fu);font-size:.75rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 8px 28px rgba(27,67,50,.38);transition:background .3s,transform .3s;animation:fca 3.5s ease-in-out infinite;}
-@keyframes fca{0%,100%{transform:translateY(0);}50%{transform:translateY(-6px);}}
-.fcta:hover{background:var(--g600);transform:translateY(-3px) scale(1.03);animation:none;}
-.fcd{width:7px;height:7px;border-radius:50%;background:#B7E4C7;animation:db 1.5s ease-in-out infinite;}
-@keyframes db{0%,100%{opacity:1;}50%{opacity:.3;}}
 
 /* ═══════════════════════════════════════════════════════
    RESPONSIVE
@@ -519,7 +499,6 @@ footer{background:var(--g900);padding:72px 8% 36px;}
   .sec{padding:64px 5%;}
   .sgrid{grid-template-columns:1fr;}
   .cg{grid-template-columns:1fr;}
-  .fcta{bottom:16px;right:14px;padding:10px 16px;font-size:.7rem;}
   .hbdg{display:none;}
   .stop{flex-direction:column;}
 }
@@ -559,8 +538,8 @@ footer{background:var(--g900);padding:72px 8% 36px;}
    Three decorative image layers, all z-index:0 and all
    pointer-events:none. They sit strictly BELOW every
    interactive element:
-     orbiting pills ........ z:2 (.orbit-system) / z:6 on hover
-     hero glass cards ...... z:2-3
+     data growth tree ...... z:3 (.dgt)
+     hero glass badges ..... z:2-3
      section content ....... z:1 (via .texture-contour>*)
      photo layers .......... z:0   ← these
    Images live in /assets as compressed JPEGs rather than
@@ -613,7 +592,7 @@ footer{background:var(--g900);padding:72px 8% 36px;}
 .hero-pause:focus-visible,.hero-dot:focus-visible{outline:2.5px solid var(--g200);outline-offset:2px;}
 .hl>*{position:relative;z-index:1;}
 @media(max-width:600px){.hero-slide img{object-position:50% 50%;transform-origin:50% 40%;}
-  .hero-ctrl{left:5%!important;transform:none!important;}}   /* keeps clear of the floating CTA */
+  .hero-ctrl{left:5%!important;transform:none!important;}}
 /* Single-column layouts: text spans the full width, so the scrim runs top→bottom.
    Heaviest behind the headline block, easing off where the glass cards sit. */
 @media(max-width:1024px){
@@ -789,9 +768,6 @@ img,svg,video,canvas{max-width:100%;}
   .hsub{font-size:clamp(1.05rem,4.4vw,1.7rem);}
   .hbody{font-size:clamp(.88rem,3.6vw,.93rem);max-width:none;}
   .lf{display:none;}                 /* floating leaves add noise at this size */
-  .hrc{position:static;padding:0;}
-  .gc{padding:20px 20px;}
-  .gc h3{font-size:1.15rem;}
 
   /* ── 2. RESTORE HIDDEN CREDIBILITY ELEMENTS ─────────────────────────── */
   /* Badge: was display:none — now a compact inline chip */
@@ -810,16 +786,19 @@ img,svg,video,canvas{max-width:100%;}
   .hric .hric-v{font-size:1.05rem;}
   .hric .hric-l{font-size:.58rem;}
 
-  /* Service pills: were display:none with the orbit — now a wrapped chip row.
-     Every layer of the orbit machinery has to be neutralised: the rotating
-     parents, the translateX arms, and the counter-rotation on the pill. */
-  .orbit-system{display:flex;position:static;width:auto;height:auto;
-                flex-wrap:wrap;gap:7px;}
-  .orbit-ring{display:none;}
-  .orbiter{position:static;width:auto;height:auto;animation:none;}
-  .arm,.arm1,.arm2,.arm3,.arm4{position:static;transform:none;}
-  .pill{position:static;translate:none;animation:none;font-size:.62rem;
-        padding:7px 13px;}
+  /* Data Growth Tree: leaves the absolute desktop layout and becomes a
+     centred, fixed-ratio block in the stacked panel (same slot the old
+     service-pill row used). Narrow line set + 2-column canopy so nothing
+     reaches the edges, down to 320px. */
+  .dgt{position:relative;inset:auto;align-self:center;width:100%;max-width:24rem;aspect-ratio:1/1;
+       margin:6px auto 2px;font-size:clamp(9.5px,2.8vw,11px);}
+  .dgt-lines--wide{display:none;}
+  .dgt-lines--narrow{display:block;}
+  .dgt-node{max-width:47%;padding:.55em .8em .55em .55em;}
+  .dgt-node--key{max-width:78%;}
+  .dgt-cert{--x:26%;--y:8%;}  .dgt-roi{--x:74%;--y:8%;}
+  .dgt-decarb{--x:26%;--y:34%;} .dgt-eff{--x:74%;--y:34%;}
+  .dgt-core{--x:50%;--y:60%;}  .dgt-base{--x:50%;--y:83%;}
 
   /* ── 3. TOUCH TARGETS — 44×44 minimum ───────────────────────────────── */
   .tbtn{width:44px;height:44px;}
@@ -827,7 +806,6 @@ img,svg,video,canvas{max-width:100%;}
   .fso{width:44px;height:44px;}
   .ntab{min-height:44px;}
   .btn,.btn2,.cfb{min-height:48px;}
-  .fcta{min-height:44px;}
   .fc a{padding:5px 0;}              /* footer links get a real tap band */
 
   /* Mobile drawer: momentum scroll + no rubber-band bleed to the page */
@@ -895,7 +873,6 @@ img,svg,video,canvas{max-width:100%;}
   .crow{gap:10px;}
   .crow .btn,.crow .btn2{flex:1 1 100%;justify-content:center;}
   .cfw{padding:24px 16px;}
-  .gc{padding:18px 16px;}
   .fb{flex-direction:column;gap:6px;text-align:center;}
   .tfsr{gap:16px;}
 }
@@ -910,16 +887,12 @@ img,svg,video,canvas{max-width:100%;}
   .htitle{font-size:2rem;letter-spacing:-.02em;}
   .hric-row,.news-tabs{margin:0 -18px;padding-left:18px;padding-right:18px;}
   .hbdg{padding:8px 12px;}
-  .pill{font-size:.58rem;padding:6px 11px;}
-  .fcta{padding:10px 14px;font-size:.66rem;gap:7px;}
 }
 
 /* Skip link — first tab stop, visually hidden until focused */
 .skip-link{position:absolute;left:-9999px;top:0;z-index:400;background:var(--g800);color:#fff;
   padding:12px 20px;border-radius:0 0 10px 0;font-size:.8rem;font-weight:700;text-decoration:none;}
 .skip-link:focus{left:0;}
-/* Orbit pills are tabbable (tabindex=0) but outline was suppressed */
-.pill:focus-visible{outline:2.5px solid #D8F3DC;outline-offset:3px;}
 main#main{display:block;}
 main#main:focus{outline:none;}
 .mail-fallback{display:block;margin-top:14px;text-align:center;font-size:.8rem;font-weight:700;
@@ -1016,8 +989,8 @@ html.menu-open,body.menu-open{overflow:hidden;}
   .hric-row,.news-tabs{margin-left:-1.25rem;margin-right:-1.25rem;padding-left:1.25rem;padding-right:1.25rem;}
 
   /* type scale */
-  .htitle,.sh,.ch2,.sct,.cft,.gc h3,.an,.apt2,.afi h4{line-height:1.2;}
-  .hbody,.sp,.scb,.tct,.apd,.afi p,.gc p,.csb,.cfs,.ftg,.fc p,.cd{line-height:1.6;}
+  .htitle,.sh,.ch2,.sct,.cft,.an,.apt2,.afi h4{line-height:1.2;}
+  .hbody,.sp,.scb,.tct,.apd,.afi p,.csb,.cfs,.ftg,.fc p,.cd{line-height:1.6;}
 
   /* hero rhythm */
   .eyebrow{margin-bottom:1.125rem;}
@@ -1178,32 +1151,22 @@ html.menu-open,body.menu-open{overflow:hidden;}
     </div>
     <div class="hric-row">
       <div class="hric hric1"><div class="hric-v">50+</div><div class="hric-l">Green Businesses</div></div>
-      <div class="hric hric2"><div class="hric-v">$2M+</div><div class="hric-l">Capital Mobilised</div></div>
-      <div class="hric hric3"><div class="hric-v">9</div><div class="hric-l">Core Services</div></div>
     </div>
-    <div class="orbit-system">
-      <div class="orbit-ring r1"></div>
-      <div class="orbit-ring r2"></div>
-      <div class="orbit-ring r3"></div>
-      <div class="orbiter orbiter1">
-        <div class="arm arm1"><span class="pill pill1" tabindex="0">ESG Strategy</span></div>
-      </div>
-      <div class="orbiter orbiter2 ccw">
-        <div class="arm arm2"><span class="pill pill2 ccw" tabindex="0">Net-Zero</span></div>
-      </div>
-      <div class="orbiter orbiter3">
-        <div class="arm arm3"><span class="pill pill3" tabindex="0">Blended Finance</span></div>
-      </div>
-      <div class="orbiter orbiter4 ccw">
-        <div class="arm arm4"><span class="pill pill4 ccw" tabindex="0">GEDSI</span></div>
-      </div>
-    </div>
-    <div class="hrc">
-      <div class="gc">
-        <div class="gc-ey">Who We Are</div>
-        <h3>Fundraising &amp; Investment Mobilisation</h3>
-        <p>Smart Green Development Consulting is a leading firm specialising in fundraising and investment mobilisation for innovative startups across Asia. We connect visionary entrepreneurs with the capital and strategic support needed to scale breakthrough ideas.</p>
-      </div>
+    <!-- Data Growth Tree: pure inline SVG + HTML/CSS (no canvas, WebGL or JS).
+         Roots = baseline data, trunk = ESG strategy, canopy = business outcomes. -->
+    <div class="dgt">
+      <svg class="dgt-defs" width="0" height="0" focusable="false"><defs>
+        <linearGradient id="dgtGrad" gradientUnits="userSpaceOnUse" x1="0" y1="100" x2="0" y2="0">
+          <stop offset="0" stop-color="#2D6A4F" stop-opacity=".55"/><stop offset=".55" stop-color="#40916C" stop-opacity=".8"/><stop offset="1" stop-color="#52B788"/>
+        </linearGradient></defs></svg>
+      <svg class="dgt-lines dgt-lines--wide" viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false"><g stroke="url(#dgtGrad)"><path class="dgt-root" d="M50 89 C49 94 42 96 33 100"/><path class="dgt-root" d="M50 89 C50 95 47 98 44 100"/><path class="dgt-root" d="M50 89 C50 95 53 98 56 100"/><path class="dgt-root" d="M50 89 C51 94 58 96 67 100"/><path d="M50 88 L50 22"/><path d="M50 52 C50 42 33 34 18 34"/><path d="M50 52 C50 42 67 34 82 34"/><path d="M50 24 C50 13 38 6 29 6"/><path d="M50 24 C50 13 62 6 71 6"/></g><g><path class="dgt-flow" d="M50 88 L50 22"/><path class="dgt-flow" d="M50 52 C50 42 33 34 18 34"/><path class="dgt-flow" d="M50 52 C50 42 67 34 82 34"/><path class="dgt-flow" d="M50 24 C50 13 38 6 29 6"/><path class="dgt-flow" d="M50 24 C50 13 62 6 71 6"/></g></svg>
+      <svg class="dgt-lines dgt-lines--narrow" viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false"><g stroke="url(#dgtGrad)"><path class="dgt-root" d="M50 89 C49 94 42 96 33 100"/><path class="dgt-root" d="M50 89 C50 95 47 98 44 100"/><path class="dgt-root" d="M50 89 C50 95 53 98 56 100"/><path class="dgt-root" d="M50 89 C51 94 58 96 67 100"/><path d="M50 90 L50 18"/><path d="M50 47 C50 39 37 34 26 34"/><path d="M50 47 C50 39 63 34 74 34"/><path d="M50 20 C50 13 37 8 26 8"/><path d="M50 20 C50 13 63 8 74 8"/></g><g><path class="dgt-flow" d="M50 90 L50 18"/><path class="dgt-flow" d="M50 47 C50 39 37 34 26 34"/><path class="dgt-flow" d="M50 47 C50 39 63 34 74 34"/><path class="dgt-flow" d="M50 20 C50 13 37 8 26 8"/><path class="dgt-flow" d="M50 20 C50 13 63 8 74 8"/></g></svg>
+      <div class="dgt-node dgt-cert"><span class="dgt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg></span><span class="dgt-t">Green Certifications</span></div>
+      <div class="dgt-node dgt-roi"><span class="dgt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></span><span class="dgt-t">Sustainable ROI &amp; Value</span></div>
+      <div class="dgt-node dgt-decarb"><span class="dgt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></span><span class="dgt-t">Decarbonization Pathways</span></div>
+      <div class="dgt-node dgt-eff"><span class="dgt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></span><span class="dgt-t">Resource &amp; Energy Efficiency</span></div>
+      <div class="dgt-node dgt-node--key dgt-core"><span class="dgt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span><span class="dgt-t"><small>Strategic Core</small>ESG &amp; Net-Zero Strategy</span></div>
+      <div class="dgt-node dgt-node--key dgt-base"><span class="dgt-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" focusable="false"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg></span><span class="dgt-t"><small>Foundation</small>Baseline &amp; Carbon Accounting</span></div>
     </div>
   </div>
   <div class="hero-ctrl" hidden>
@@ -1548,11 +1511,6 @@ html.menu-open,body.menu-open{overflow:hidden;}
   </div>
 </footer>
 
-<!-- ── FLOATING CTA ────────────────────────────────────────────────────────── -->
-<a href="#contact" class="fcta" aria-label="Request a consultation">
-  <div class="fcd" aria-hidden="true"></div>Request Consultation
-</a>
-
 <!-- Toast notification container -->
 <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
 
@@ -1718,20 +1676,6 @@ document.addEventListener('keydown', (e) => {
   if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
   else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
 });
-
-/* ── 3b. Orbiting Ecosystem — pause the whole system on pill hover/focus ────── */
-const orbitSystem = document.querySelector('.orbit-system');
-if (orbitSystem) {
-  const orbitPills = orbitSystem.querySelectorAll('.pill');
-  const pauseOrbit  = () => orbitSystem.classList.add('paused');
-  const resumeOrbit = () => orbitSystem.classList.remove('paused');
-  orbitPills.forEach(pill => {
-    pill.addEventListener('pointerenter', pauseOrbit);
-    pill.addEventListener('pointerleave', resumeOrbit);
-    pill.addEventListener('focus', pauseOrbit);
-    pill.addEventListener('blur', resumeOrbit);
-  });
-}
 
 /* ── 3c. Leaf-blob parallax — handed to the unified scroll controller above,
    so the page keeps a single scroll listener rather than one per effect. */
